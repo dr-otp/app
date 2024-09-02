@@ -4,6 +4,7 @@ import { VueQueryPlugin } from '@tanstack/vue-query'
 import { createPinia } from 'pinia'
 import PrimeVue from 'primevue/config'
 import { createApp } from 'vue'
+import FocusTrap from 'primevue/focustrap'
 
 import './config/yup'
 
@@ -28,5 +29,6 @@ app.use(PrimeVue, {
     reject: 'Rechazar'
   }
 })
+app.directive('focustrap', FocusTrap)
 
 app.mount('#app')

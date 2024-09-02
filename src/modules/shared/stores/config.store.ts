@@ -23,6 +23,8 @@ export const useConfigStore = defineStore('config', () => {
   return {
     //? Props
     //* Getters
+    darkTheme: ref(theme.value === 'dark'),
+
     //! Actions
     setAppTheme,
     toggleTheme

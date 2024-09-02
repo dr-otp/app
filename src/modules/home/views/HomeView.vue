@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { useConfigStore } from '@shared/stores/config.store'
 
-const { setAppTheme, toggleTheme } = useConfigStore()
-
-setAppTheme()
+const { toggleTheme } = useConfigStore()
 </script>
 
 <template>
