@@ -5,6 +5,7 @@ import { createPinia } from 'pinia'
 import PrimeVue from 'primevue/config'
 import { createApp } from 'vue'
 import FocusTrap from 'primevue/focustrap'
+import ToastService from 'primevue/toastservice'
 
 import './config/yup'
 
@@ -18,17 +19,10 @@ app.use(createPinia())
 app.use(router)
 app.use(VueQueryPlugin)
 app.use(PrimeVue, {
-  theme: {
-    preset: Aura,
-    options: {
-      darkModeSelector: '.dark'
-    }
-  },
-  locale: {
-    accept: 'Aceptar',
-    reject: 'Rechazar'
-  }
+  theme: { preset: Aura, options: { darkModeSelector: '.dark' } },
+  locale: { accept: 'Aceptar', reject: 'Rechazar' }
 })
 app.directive('focustrap', FocusTrap)
+app.use(ToastService)
 
 app.mount('#app')

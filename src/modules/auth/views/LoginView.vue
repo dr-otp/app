@@ -1,23 +1,55 @@
 <script setup lang="ts">
+import { useToast } from 'primevue/usetoast'
 import { useForm } from 'vee-validate'
+import { ref } from 'vue'
 
+import { envs } from '@/config/envs'
 import { useConfigStore } from '@/modules/shared/stores/config.store'
 import CustomInputPassword from '@shared/components/CustomInputPassword.vue'
 import CustomInputText from '@shared/components/CustomInputText.vue'
 import { loginSchema } from '../schemas'
+import { useAuthStore } from '../store/auth.store'
 
+const toast = useToast()
 const { darkTheme } = useConfigStore()
+const authStore = useAuthStore()
 
-const { defineField, errors, handleSubmit, handleReset } = useForm({
-  validationSchema: loginSchema
+const initialValues = envs.mode === 'development' ? { username: 'dev', password: 'Dev@123' } : {}
+const { defineField, errors, handleSubmit } = useForm({
+  validationSchema: loginSchema,
+  initialValues
 })
 
+const error = ref<string | null>(null)
 const [username, usernameAttrs] = defineField('username')
 const [password, passwordAttrs] = defineField('password')
 
-const onSubmit = handleSubmit(async (values) => {
-  console.log(values)
-  handleReset()
+const onSubmit = handleSubmit(async ({ username, password }, { resetForm }) => {
+  try {
+    const ok = await authStore.login(username, password)
+
+    if (!ok) {
+      error.value = 'Credenciales incorrectas'
+      return
+    }
+
+    toast.add({
+      severity: 'success',
+      summary: 'Éxito',
+      detail: 'Inicio de sesión exitoso',
+      life: 3000
+    })
+
+    resetForm()
+  } catch (error) {
+    console.log(error)
+    toast.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: 'Ocurrió un error al iniciar sesión',
+      life: 3000
+    })
+  }
 })
 </script>
 
@@ -53,6 +85,9 @@ const onSubmit = handleSubmit(async (values) => {
             class="mt-4"
             fluid
           />
+          <transition name="p-message" tag="div" class="flex flex-col">
+            <Message v-if="error" severity="error">{{ error }}</Message>
+          </transition>
         </form>
       </template>
     </Card>

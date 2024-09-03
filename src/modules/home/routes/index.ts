@@ -1,9 +1,12 @@
+import isAuthenticatedGuard from '@/modules/auth/guards/is-authenticated.guard'
 import type { RouteRecordRaw } from 'vue-router'
 
 export const HOME_ROUTES: RouteRecordRaw = {
   path: '/',
   name: 'home.index',
   alias: '/home',
+  redirect: { name: 'home.view' },
+  beforeEnter: [isAuthenticatedGuard],
   component: () => import('@/modules/home/layout/HomeLayout.vue'),
   children: [
     {
