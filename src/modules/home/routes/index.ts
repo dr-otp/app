@@ -3,7 +3,7 @@ import type { RouteRecordRaw } from 'vue-router'
 
 export const HOME_ROUTES: RouteRecordRaw = {
   path: '/',
-  name: 'home.index',
+  name: 'home',
   alias: '/home',
   redirect: { name: 'home.view' },
   beforeEnter: [isAuthenticatedGuard],
@@ -18,6 +18,11 @@ export const HOME_ROUTES: RouteRecordRaw = {
       path: 'generar_otp',
       name: 'home.generate_otp',
       component: () => import('@/modules/home/views/GenerateOtpView.vue')
+    },
+    {
+      path: 'perfil',
+      name: 'home.profile',
+      component: () => import('@/modules/profile/views/ProfileView.vue')
     }
   ]
 }

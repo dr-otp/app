@@ -9,9 +9,11 @@ import CustomInputPassword from '@shared/components/CustomInputPassword.vue'
 import CustomInputText from '@shared/components/CustomInputText.vue'
 import { loginSchema } from '../schemas'
 import { useAuthStore } from '../store/auth.store'
+import { storeToRefs } from 'pinia'
 
 const toast = useToast()
-const { darkTheme } = useConfigStore()
+const configStore = useConfigStore()
+const { darkTheme } = storeToRefs(configStore)
 const authStore = useAuthStore()
 
 const initialValues = envs.mode === 'development' ? { username: 'dev', password: 'Dev@123' } : {}
@@ -37,7 +39,7 @@ const onSubmit = handleSubmit(async ({ username, password }, { resetForm }) => {
       severity: 'success',
       summary: 'Éxito',
       detail: 'Inicio de sesión exitoso',
-      life: 3000
+      life: 1000
     })
 
     resetForm()
@@ -80,10 +82,11 @@ const onSubmit = handleSubmit(async ({ username, password }, { resetForm }) => {
           />
           <Button
             type="submit"
-            :outlined="darkTheme === true ? true : undefined"
             label="Iniciar sesión"
             class="mt-4"
             fluid
+            :severity="darkTheme ? 'primary' : 'contrast'"
+            outlined
           />
           <transition name="p-message" tag="div" class="flex flex-col">
             <Message v-if="error" severity="error">{{ error }}</Message>

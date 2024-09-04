@@ -16,7 +16,7 @@ setAppTheme()
 authStore.$subscribe(
   async (_, state) => {
     if (route.path.includes('/auth') && state.authStatus === AuthStatus.Authenticated) {
-      router.replace({ name: 'home.index' })
+      router.replace({ name: 'home' })
       return
     }
 
