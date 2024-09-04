@@ -1,15 +1,17 @@
-import { useLocalStorage } from '@vueuse/core'
+import { useLocalStorage, useSessionStorage } from '@vueuse/core'
 import { defineStore } from 'pinia'
+import { useToast } from 'primevue/usetoast'
 import { computed, ref } from 'vue'
 
 import { checkAuthAction, loginAction } from '../actions'
 import { AuthStatus, type User } from '../interfaces'
 
 export const useAuthStore = defineStore('auth', () => {
+  const toast = useToast()
   const authStatus = ref<AuthStatus>(AuthStatus.Checking)
   const user = ref<User | undefined>()
   const token = ref(useLocalStorage('token', ''))
-  const sessionClosed = ref(false)
+  const sessionClosedNotified = ref(useSessionStorage('sessionClosedNotified', false))
 
   const login = async (username: string, password: string) => {
     try {
@@ -23,6 +25,7 @@ export const useAuthStore = defineStore('auth', () => {
       user.value = loginResp.user
       token.value = loginResp.token
       authStatus.value = AuthStatus.Authenticated
+      sessionClosedNotified.value = false
 
       return true
     } catch (error) {
@@ -37,7 +40,15 @@ export const useAuthStore = defineStore('auth', () => {
     user.value = undefined
     token.value = ''
 
-    if (closedManually) sessionClosed.value = true
+    if (!closedManually && !sessionClosedNotified.value) {
+      toast.add({
+        severity: 'error',
+        summary: 'No Autorizado',
+        detail: 'La sesión ha expirado, por favor inicie sesión nuevamente',
+        life: 5000
+      })
+      sessionClosedNotified.value = true
+    }
 
     return false
   }
@@ -54,6 +65,7 @@ export const useAuthStore = defineStore('auth', () => {
       authStatus.value = AuthStatus.Authenticated
       user.value = statusResp.user
       token.value = statusResp.token
+      sessionClosedNotified.value = false
       return true
     } catch (error) {
       logout()
@@ -65,7 +77,6 @@ export const useAuthStore = defineStore('auth', () => {
     user,
     token,
     authStatus,
-    sessionClosed,
 
     // Getters
     isChecking: computed(() => authStatus.value === AuthStatus.Checking),

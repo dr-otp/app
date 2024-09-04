@@ -13,7 +13,20 @@ const isAuthenticatedGuard = async (
   if (authStore.authStatus === AuthStatus.Checking) await authStore.checkAuthStatus()
 
   // If the user is unauthenticated, redirect to login
-  authStore.authStatus === AuthStatus.Unauthenticated ? next({ name: 'auth.login' }) : next()
+  if (authStore.authStatus === AuthStatus.Unauthenticated) {
+    localStorage.setItem('lastAttemptedRoute', JSON.stringify(to.fullPath)) // Save route
+    next({ name: 'auth.login' })
+    return
+  }
+
+  const lastAttemptedRoute = localStorage.getItem('lastAttemptedRoute')
+  if (lastAttemptedRoute) {
+    localStorage.removeItem('lastAttemptedRoute')
+    next(JSON.parse(lastAttemptedRoute))
+    return
+  }
+
+  next()
 }
 
 export default isAuthenticatedGuard

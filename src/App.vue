@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import { VueQueryDevtools } from '@tanstack/vue-query-devtools'
-import { useConfigStore } from '@shared/stores/config.store'
-import { useAuthStore } from './modules/auth/store/auth.store'
-import { AuthStatus } from './modules/auth/interfaces'
-import { useRoute, useRouter } from 'vue-router'
 import FullscreenLoader from '@shared/components/FullscreenLoader.vue'
-import { useToast } from 'primevue/usetoast'
+import { useConfigStore } from '@shared/stores/config.store'
+import { VueQueryDevtools } from '@tanstack/vue-query-devtools'
+import { useRoute, useRouter } from 'vue-router'
+import { AuthStatus } from './modules/auth/interfaces'
+import { useAuthStore } from './modules/auth/store/auth.store'
 
-const toast = useToast()
 const authStore = useAuthStore()
 const router = useRouter()
 const route = useRoute()
@@ -25,14 +23,6 @@ authStore.$subscribe(
     if (authStore.authStatus === AuthStatus.Unauthenticated) {
       router.replace({ name: 'auth.login' })
     }
-
-    if (authStore.sessionClosed)
-      toast.add({
-        severity: 'error',
-        summary: 'No Autorizado',
-        detail: 'La sesión ha expirado, por favor inicie sesión nuevamente',
-        life: 5000
-      })
   },
   {
     immediate: true

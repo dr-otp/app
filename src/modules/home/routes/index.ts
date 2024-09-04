@@ -13,6 +13,11 @@ export const HOME_ROUTES: RouteRecordRaw = {
       path: '',
       name: 'home.view',
       component: () => import('@/modules/home/views/HomeView.vue')
+    },
+    {
+      path: 'generar_otp',
+      name: 'home.generate_otp',
+      component: () => import('@/modules/home/views/GenerateOtpView.vue')
     }
   ]
 }
