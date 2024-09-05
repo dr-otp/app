@@ -10,6 +10,7 @@ import CustomInputText from '@shared/components/CustomInputText.vue'
 import { loginSchema } from '../schemas'
 import { useAuthStore } from '../store/auth.store'
 import { storeToRefs } from 'pinia'
+import CustomButton from '@/modules/shared/components/CustomButton.vue'
 
 const toast = useToast()
 const configStore = useConfigStore()
@@ -58,7 +59,7 @@ const onSubmit = handleSubmit(async ({ username, password }, { resetForm }) => {
 <template>
   <div class="max-w-[30rem] h-full mx-auto flex items-center flex-col justify-center">
     <h1 class="font-bold text-center text-2xl mb-5">Logo</h1>
-    <Card class="w-full">
+    <Card class="w-full dark:bg-gray-900 border dark:border-gray-700">
       <template #title>
         <div class="text-center">Inicio de sesión</div>
       </template>
@@ -80,14 +81,7 @@ const onSubmit = handleSubmit(async ({ username, password }, { resetForm }) => {
             v-bind="passwordAttrs"
             :error="errors.password"
           />
-          <Button
-            type="submit"
-            label="Iniciar sesión"
-            class="mt-4"
-            fluid
-            :severity="darkTheme ? 'primary' : 'contrast'"
-            outlined
-          />
+          <CustomButton type="submit" label="Iniciar sesión" class="mt-4" fluid />
           <transition name="p-message" tag="div" class="flex flex-col">
             <Message v-if="error" severity="error">{{ error }}</Message>
           </transition>

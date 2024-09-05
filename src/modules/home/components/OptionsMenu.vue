@@ -47,8 +47,6 @@ const handleToggle = async () => {
     configStore.toggleTheme()
   }).ready
 
-  console.log('toggleBtn', toggleBtn.value)
-
   const { top, left, width, height } = toggleBtn.value.getBoundingClientRect()
 
   document.documentElement.animate(
