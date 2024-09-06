@@ -34,7 +34,7 @@ authStore.$subscribe(
   <FullscreenLoader v-if="authStore.isChecking" />
 
   <RouterView v-else />
-  <VueQueryDevtools />
+  <VueQueryDevtools button-position="bottom-left" />
   <Toast />
 </template>
 

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
 import { PrimeIcons as icons } from '@primevue/core/api'
 import type { MenuMethods } from 'primevue/menu'
 import type { MenuItem } from 'primevue/menuitem'
+import { ref } from 'vue'
 
 import { useAuthStore } from '@/modules/auth/store/auth.store'
 import { useConfigStore } from '@/modules/shared/stores/config.store'
@@ -69,7 +69,7 @@ const handleToggle = async () => {
   <div ref="toggleBtn">
     <Button :icon="darkTheme ? icons.MOON : icons.SUN" @click="handleToggle" text plain />
   </div>
-  <Button :icon="icons.ELLIPSIS_V" @click="toggle" text plain />
+  <Button :icon="icons.COG" @click="toggle" text plain />
   <Menu ref="menu" id="overlay_menu" :model="items" :popup="true">
     <template #start>
       <span

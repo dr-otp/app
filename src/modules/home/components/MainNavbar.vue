@@ -7,7 +7,9 @@ import OptionsMenu from './OptionsMenu.vue'
 
 const items = ref<MenuItem[]>([
   { icon: icons.HOME, route: { name: 'home' } },
+  { icon: icons.LOCK, label: 'OTP', route: { name: 'home.generate_otp' } },
   {
+    visible: false,
     label: 'Projects',
     icon: icons.SEARCH,
     items: [
@@ -24,7 +26,7 @@ const items = ref<MenuItem[]>([
 </script>
 
 <template>
-  <Menubar :model="items">
+  <Menubar :model="items" class="dark:bg-dark-950">
     <template #item="{ item, props, hasSubmenu, root }">
       <router-link v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
         <a v-ripple :href="href" v-bind="props.action" @click="navigate">

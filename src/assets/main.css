@@ -8,3 +8,7 @@
   animation: none;
   mix-blend-mode: normal;
 }
+
+.debug {
+  @apply border border-red-500;
+}

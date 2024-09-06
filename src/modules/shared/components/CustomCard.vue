@@ -6,16 +6,22 @@ defineSlots<CardSlots>()
 </script>
 
 <template>
-  <Card class="dark:bg-gray-900 border dark:border-gray-700">
+  <Card class="dark:bg-dark-800 border dark:border-gray-700 border-primary-400">
     <!-- Use the slots here -->
     <template #header>
-      <slot name="header"></slot>
+      <slot name="header" />
+    </template>
+    <template #title>
+      <slot name="title" />
+    </template>
+    <template #subtitle>
+      <slot name="subtitle" />
     </template>
     <template #content>
-      <slot name="content"></slot>
+      <slot name="content" />
     </template>
     <template #footer>
-      <slot name="footer"></slot>
+      <slot name="footer" />
     </template>
   </Card>
 </template>

@@ -11,8 +11,8 @@ import MainNavbar from '../components/MainNavbar.vue'
       <MainNavbar />
 
       <!-- Main content area, with padding at the top and bottom, and horizontal scrolling enabled for overflow -->
-      <section class="flex-grow pt-6 pb-12 px-6 overflow-x-auto">
-        <div class="max-w-[100rem] w-full mx-auto">
+      <section class="flex-grow pt-6 pb-12 px-6 overflow-x-auto bg-gray-50 dark:bg-dark-900">
+        <div class="max-w-[100rem] w-full mx-auto relative">
           <!-- RouterView will render the active route's component here -->
           <RouterView />
         </div>
