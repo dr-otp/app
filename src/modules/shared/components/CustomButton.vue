@@ -21,7 +21,6 @@ interface Props {
 }
 
 withDefaults(defineProps<Props>(), {
-  label: 'Button',
   className: '',
   severity: 'primary',
   outlined: false,

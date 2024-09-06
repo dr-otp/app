@@ -1,4 +1,5 @@
 import isAuthenticatedGuard from '@/modules/auth/guards/is-authenticated.guard'
+import { USERS_ROUTES } from '@/modules/users/routes'
 import type { RouteRecordRaw } from 'vue-router'
 
 export const HOME_ROUTES: RouteRecordRaw = {
@@ -23,6 +24,7 @@ export const HOME_ROUTES: RouteRecordRaw = {
       path: 'generar_otp',
       name: 'home.generate_otp',
       component: () => import('@/modules/otp/views/GenerateOtpView.vue')
-    }
+    },
+    ...USERS_ROUTES
   ]
 }

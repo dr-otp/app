@@ -1,28 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { useAuthStore } from '@/modules/auth/store/auth.store'
 import { PrimeIcons as icons } from '@primevue/core/api'
-import type { MenuItem } from 'primevue/menuitem'
-
+import { storeToRefs } from 'pinia'
+import { getMenuOptions } from '../data/menu-options.data'
 import OptionsMenu from './OptionsMenu.vue'
 
-const items = ref<MenuItem[]>([
-  { icon: icons.HOME, route: { name: 'home' } },
-  { icon: icons.LOCK, label: 'OTP', route: { name: 'home.generate_otp' } },
-  {
-    visible: false,
-    label: 'Projects',
-    icon: icons.SEARCH,
-    items: [
-      { label: 'Core', icon: icons.BOLT },
-      { separator: true },
-      {
-        label: 'Templates',
-        icon: icons.PALETTE,
-        items: [{ label: 'Apollo', icon: icons.PALETTE, badge: 2 }]
-      }
-    ]
-  }
-])
+const authStore = useAuthStore()
+const { userRoles } = storeToRefs(authStore)
+const items = getMenuOptions(userRoles.value || [])
 </script>
 
 <template>

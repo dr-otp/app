@@ -4,7 +4,7 @@ import { useToast } from 'primevue/usetoast'
 import { computed, ref } from 'vue'
 
 import { checkAuthAction, loginAction } from '../actions'
-import { AuthStatus, type User } from '../interfaces'
+import { AuthStatus, UserRoles, type User } from '../interfaces'
 
 export const useAuthStore = defineStore('auth', () => {
   const toast = useToast()
@@ -18,7 +18,7 @@ export const useAuthStore = defineStore('auth', () => {
       const loginResp = await loginAction(username, password)
 
       if (!loginResp.ok) {
-        logout()
+        logout(true)
         return false
       }
 
@@ -29,7 +29,7 @@ export const useAuthStore = defineStore('auth', () => {
 
       return true
     } catch (error) {
-      return logout()
+      return logout(true)
     }
   }
 
@@ -81,8 +81,9 @@ export const useAuthStore = defineStore('auth', () => {
     // Getters
     isChecking: computed(() => authStatus.value === AuthStatus.Checking),
     isAuthenticated: computed(() => authStatus.value === AuthStatus.Authenticated),
-    isAdmin: computed(() => user.value?.roles.includes('Admin') ?? false),
+    isAdmin: computed(() => user.value?.roles.includes(UserRoles.Admin) ?? false),
     username: computed(() => user.value?.username),
+    userRoles: computed(() => user.value?.roles),
 
     // Actions
     login,

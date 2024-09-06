@@ -7,6 +7,7 @@ import PrimeVue from 'primevue/config'
 import { createApp } from 'vue'
 import FocusTrap from 'primevue/focustrap'
 import ToastService from 'primevue/toastservice'
+import Tooltip from 'primevue/tooltip'
 
 import './config/yup'
 
@@ -23,7 +24,8 @@ app.use(PrimeVue, {
   theme: { preset: Aura, options: { darkModeSelector: '.dark' } },
   locale: { accept: 'Aceptar', reject: 'Rechazar' }
 })
-app.directive('focustrap', FocusTrap)
 app.use(ToastService)
+app.directive('focustrap', FocusTrap)
+app.directive('tooltip', Tooltip)
 
 app.mount('#app')
