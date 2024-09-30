@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { useAuthStore } from '@/modules/auth/store/auth.store'
 import CustomCard from '@/modules/shared/components/CustomCard.vue'
+import { useConfigStore } from '@/modules/shared/stores/config.store'
 import { storeToRefs } from 'pinia'
 
 const authStore = useAuthStore()
 const { user } = storeToRefs(authStore)
+useConfigStore().setTitle('Perfil | OTP')
 </script>
 
 <template>

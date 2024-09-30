@@ -8,7 +8,9 @@ import LoadingListPage from '@/modules/shared/components/LoadingListPage.vue'
 import { usePagination } from '@/modules/shared/composables/usePagination'
 import UserCard from '../components/UserCard.vue'
 import { useUsers } from '../composables/useUsers'
+import { useConfigStore } from '@/modules/shared/stores/config.store'
 
+useConfigStore().setTitle('Usuarios | OTP')
 const { users, lastPage, total } = useUsers()
 const { page } = usePagination()
 

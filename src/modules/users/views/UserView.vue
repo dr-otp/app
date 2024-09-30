@@ -1,5 +1,7 @@
 <script setup lang="ts">
-console.log('UserView')
+import { useConfigStore } from '@/modules/shared/stores/config.store'
+
+useConfigStore().setTitle('Usuario | OTP')
 </script>
 
 <template>

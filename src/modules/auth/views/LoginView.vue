@@ -4,19 +4,17 @@ import { useForm } from 'vee-validate'
 import { ref } from 'vue'
 
 import { envs } from '@/config/envs'
+import CustomButton from '@/modules/shared/components/CustomButton.vue'
 import { useConfigStore } from '@/modules/shared/stores/config.store'
 import CustomInputPassword from '@shared/components/CustomInputPassword.vue'
 import CustomInputText from '@shared/components/CustomInputText.vue'
 import { loginSchema } from '../schemas'
 import { useAuthStore } from '../store/auth.store'
-import { storeToRefs } from 'pinia'
-import CustomButton from '@/modules/shared/components/CustomButton.vue'
 
 const toast = useToast()
 const configStore = useConfigStore()
-const { darkTheme } = storeToRefs(configStore)
 const authStore = useAuthStore()
-
+configStore.setTitle('Inicio de sesión | OTP')
 const initialValues = envs.mode === 'development' ? { username: 'dev', password: 'Dev@123' } : {}
 const { defineField, errors, handleSubmit } = useForm({
   validationSchema: loginSchema,

@@ -6,12 +6,12 @@ import { useRoute, useRouter } from 'vue-router'
 import { AuthStatus } from './modules/auth/interfaces'
 import { useAuthStore } from './modules/auth/store/auth.store'
 
-const authStore = useAuthStore()
 const router = useRouter()
 const route = useRoute()
-const { setAppTheme } = useConfigStore()
+const authStore = useAuthStore()
+const configStore = useConfigStore()
 
-setAppTheme()
+configStore.setAppTheme()
 
 authStore.$subscribe(
   async (_, state) => {
@@ -23,6 +23,15 @@ authStore.$subscribe(
     if (authStore.authStatus === AuthStatus.Unauthenticated) {
       router.replace({ name: 'auth.login' })
     }
+  },
+  {
+    immediate: true
+  }
+)
+
+configStore.$subscribe(
+  async (_, state) => {
+    document.title = state.title
   },
   {
     immediate: true

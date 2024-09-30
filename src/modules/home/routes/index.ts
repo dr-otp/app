@@ -21,8 +21,8 @@ export const HOME_ROUTES: RouteRecordRaw = {
       component: () => import('@/modules/profile/views/ProfileView.vue')
     },
     {
-      path: 'generar_otp',
-      name: 'home.generate_otp',
+      path: 'vales',
+      name: 'home.voucher',
       component: () => import('@/modules/otp/views/GenerateOtpView.vue')
     },
     ...USERS_ROUTES

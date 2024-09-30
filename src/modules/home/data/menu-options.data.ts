@@ -4,7 +4,7 @@ import type { MenuItem } from 'primevue/menuitem'
 
 export const getMenuOptions = (userRoles: UserRoles[]): MenuItem[] => [
   { icon: icons.HOME, route: { name: 'home' } },
-  { icon: icons.LOCK, label: 'OTP', route: { name: 'home.generate_otp' } },
+  { icon: icons.LOCK, label: 'OTP', route: { name: 'home.voucher' } },
   {
     visible: false,
     label: 'Projects',

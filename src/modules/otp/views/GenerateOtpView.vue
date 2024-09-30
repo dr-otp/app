@@ -4,7 +4,9 @@ import CustomButton from '@/modules/shared/components/CustomButton.vue'
 import CustomCard from '@/modules/shared/components/CustomCard.vue'
 import OtpDialog from '../components/OtpDialog.vue'
 import { ref } from 'vue'
+import { useConfigStore } from '@/modules/shared/stores/config.store'
 
+useConfigStore().setTitle('Vales | OTP')
 const visible = ref(false)
 
 const openDialog = () => {

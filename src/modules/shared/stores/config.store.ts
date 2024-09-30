@@ -6,6 +6,7 @@ type Theme = 'light' | 'dark'
 
 export const useConfigStore = defineStore('config', () => {
   const theme = ref(useLocalStorage<Theme | null>('theme', null))
+  const title = ref('OTP App')
 
   const setAppTheme = () => {
     const element = document.querySelector('html')
@@ -27,13 +28,20 @@ export const useConfigStore = defineStore('config', () => {
     setAppTheme()
   }
 
+  const setTitle = (newTitle: string) => {
+    title.value = newTitle
+  }
+
   return {
     //? Props
+    title,
+
     //* Getters
     darkTheme: computed(() => theme.value === 'dark'),
 
     //! Actions
     setAppTheme,
-    toggleTheme
+    toggleTheme,
+    setTitle
   }
 })
