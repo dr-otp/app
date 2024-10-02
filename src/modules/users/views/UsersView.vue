@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { PrimeIcons as icons } from '@primevue/core/api'
-
-import CustomButton from '@shared/components/CustomButton.vue'
 import CustomPagination from '@shared/components/CustomPagination.vue'
 import ListPage from '@shared/components/ListPage.vue'
 import LoadingListPage from '@shared/components/LoadingListPage.vue'
@@ -20,19 +17,13 @@ const handleNewUser = () => {
 </script>
 
 <template>
-  <ListPage :blockBody="isFetching && isPlaceholderData">
-    <template #header>
-      <div class="flex justify-between">
-        <h1 class="text-4xl font-semibold">Usuarios</h1>
-        <CustomButton
-          label="Nuevo Usuario"
-          @click="handleNewUser"
-          :icon="icons.PLUS"
-          icon-pos="right"
-          :disabled="!users"
-        />
-      </div>
-    </template>
+  <ListPage
+    :blockBody="isFetching && isPlaceholderData"
+    title="Usuarios"
+    label="Nuevo Usuario"
+    @on:click="handleNewUser"
+    :btn-disabled="isLoading && !isPlaceholderData"
+  >
     <template #body>
       <LoadingListPage v-if="isLoading && !isPlaceholderData" />
       <UserCard v-else v-for="user in users" :key="user.id" :user="user" />

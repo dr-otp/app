@@ -22,7 +22,13 @@ const openDialog = () => {
 </script>
 
 <template>
-  <ListPage :blockBody="isFetching && isPlaceholderData">
+  <ListPage
+    :blockBody="isFetching && isPlaceholderData"
+    title="Clientes"
+    label="Nuevo Cliente"
+    @on:click="() => {}"
+    :btn-disabled="isLoading && !isPlaceholderData"
+  >
     <template #header>
       <div class="flex justify-between">
         <h1 class="text-4xl font-semibold">Clientes</h1>

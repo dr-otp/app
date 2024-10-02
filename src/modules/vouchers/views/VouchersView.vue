@@ -11,19 +11,21 @@ import VoucherCard from '../components/VoucherCard.vue'
 
 useConfigStore().setTitle('Vales | OTP')
 const visible = ref(false)
-const vouchers = []
+const vouchers: any[] = []
 
 const openDialog = () => {
   visible.value = true
 }
-
-const updateDialog = (value: boolean) => {
-  visible.value = value
-}
 </script>
 
 <template>
-  <ListPage>
+  <ListPage
+    :blockBody="false"
+    title="Vales"
+    label="Nuevo Vale"
+    @on:click="() => {}"
+    :btn-disabled="!vouchers"
+  >
     <template #header>
       <div class="flex justify-between">
         <h1 class="text-4xl font-semibold">Vales</h1>
