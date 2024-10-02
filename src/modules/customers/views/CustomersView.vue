@@ -1,21 +1,24 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { PrimeIcons as icons } from '@primevue/core/api'
 
 import CustomButton from '@/modules/shared/components/CustomButton.vue'
 import CustomPagination from '@/modules/shared/components/CustomPagination.vue'
 import ListPage from '@/modules/shared/components/ListPage.vue'
 import LoadingListPage from '@/modules/shared/components/LoadingListPage.vue'
-import { usePagination } from '@/modules/shared/composables/usePagination'
-import UserCard from '../components/UserCard.vue'
-import { useUsers } from '../composables/useUsers'
 import { useConfigStore } from '@/modules/shared/stores/config.store'
+import VoucherCard from '../components/VoucherCard.vue'
 
-useConfigStore().setTitle('Usuarios | OTP')
-const { users, lastPage, total } = useUsers()
-const { page } = usePagination()
+useConfigStore().setTitle('Vales | OTP')
+const visible = ref(false)
+const customers = []
 
-const handleNewUser = () => {
-  console.log('New User')
+const openDialog = () => {
+  visible.value = true
+}
+
+const updateDialog = (value: boolean) => {
+  visible.value = value
 }
 </script>
 
@@ -23,24 +26,21 @@ const handleNewUser = () => {
   <ListPage>
     <template #header>
       <div class="flex justify-between">
-        <h1 class="text-4xl font-semibold">Usuarios</h1>
+        <h1 class="text-4xl font-semibold">Clientes</h1>
         <CustomButton
-          label="Nuevo Usuario"
-          @click="handleNewUser"
+          label="Nuevo Cliente"
+          @click="openDialog"
           :icon="icons.PLUS"
           icon-pos="right"
-          :disabled="!users"
         />
       </div>
     </template>
     <template #body>
-      <LoadingListPage v-if="!users" />
-      <UserCard v-else v-for="user in users" :key="user.id" :user="user" />
+      <LoadingListPage v-if="!customers || customers.length === 0" />
+      <!-- <VoucherCard v-for="voucher in customers" :key="voucher.id" :voucher="voucher" /> -->
     </template>
     <template #footer>
-      <CustomPagination :page="page" :last-page="lastPage" :total-records="total" />
+      <CustomPagination :page="1" :last-page="1" :total-records="1" />
     </template>
   </ListPage>
 </template>
-
-<style scoped></style>
