@@ -13,7 +13,7 @@ import { getLimitPaginationHelper } from '../helpers'
       <Skeleton width="5rem"></Skeleton>
     </template>
     <template #content>
-      <Skeleton width="100%" height="6rem"></Skeleton>
+      <Skeleton width="100%" height="4rem"></Skeleton>
     </template>
     <template #footer>
       <div class="flex justify-end mt-1">

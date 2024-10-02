@@ -1,17 +1,17 @@
-import { useQuery, useQueryClient } from '@tanstack/vue-query'
 import { ref, watchEffect } from 'vue'
+import { useQuery, useQueryClient } from '@tanstack/vue-query'
 
-import { usePagination } from '@/modules/shared/composables/usePagination'
-import { getUsersAction } from '../actions/get-users.action'
+import { usePagination } from '@shared/composables/usePagination'
+import { getCustomersAction } from '../actions'
 
-export const useUsers = () => {
+export const useCustomers = () => {
   const queryClient = useQueryClient()
   const { page } = usePagination()
   const lastPage = ref(1)
   const total = ref(0)
 
   const {
-    data: users = [],
+    data: customers = [],
     isFetching,
     isLoading
   } = useQuery({
@@ -22,18 +22,18 @@ export const useUsers = () => {
   watchEffect(() => {
     if (page.value > 1)
       queryClient.prefetchQuery({
-        queryKey: ['users', { page: page.value - 1 }],
+        queryKey: ['customers', { page: page.value - 1 }],
         queryFn: () => getUsers()
       })
 
     queryClient.prefetchQuery({
-      queryKey: ['users', { page: page.value + 1 }],
+      queryKey: ['customers', { page: page.value + 1 }],
       queryFn: () => getUsers()
     })
   })
 
   const getUsers = async () => {
-    const { data, meta } = await getUsersAction(page.value)
+    const { data, meta } = await getCustomersAction(page.value)
     lastPage.value = meta.lastPage
     total.value = meta.total
     return data
@@ -41,7 +41,7 @@ export const useUsers = () => {
 
   return {
     //* Props
-    users,
+    customers,
     lastPage,
     total,
     isFetching,

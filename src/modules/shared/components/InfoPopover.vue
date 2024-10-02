@@ -6,11 +6,14 @@ import type { PopoverMethods } from 'primevue/popover'
 import { ref } from 'vue'
 
 interface Props {
-  user: UserSummary | null
+  user: UserSummary | null | undefined
   createdAt: string | Date
+  title: string
 }
 
-defineProps<Props>()
+withDefaults(defineProps<Props>(), {
+  title: 'Creado:'
+})
 defineEmits(['on:open', 'on:close'])
 
 const op = ref<PopoverMethods | null>(null)
@@ -29,7 +32,7 @@ defineExpose({ open, close })
 <template>
   <Popover ref="op">
     <div class="flex flex-col">
-      <span class="font-medium block mb-2">Creado:</span>
+      <span class="font-medium block mb-2">{{ title }}:</span>
 
       <span class="flex items-center text-muted-color">
         <i :class="icons.USER"></i>
@@ -37,7 +40,7 @@ defineExpose({ open, close })
       </span>
       <span class="flex items-center text-muted-color">
         <i :class="icons.ENVELOPE"></i>
-        <span class="ml-2">@{{ user?.email }}</span>
+        <span class="ml-2">{{ user?.email }}</span>
       </span>
       <span class="flex items-center text-muted-color">
         <i :class="icons.CALENDAR"></i>

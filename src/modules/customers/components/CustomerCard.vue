@@ -2,13 +2,13 @@
 import { PrimeIcons as icons } from '@primevue/core/api'
 import { ref } from 'vue'
 
-import type { User } from '@/modules/auth/interfaces'
 import CustomButton from '@shared/components/CustomButton.vue'
-import CustomCard from '@shared/components/CustomCard.vue'
 import InfoPopover from '@shared/components/InfoPopover.vue'
+import CustomCard from '@shared/components/CustomCard.vue'
+import type { Customer } from '../interfaces/customer.interface'
 
 interface Props {
-  user: User
+  customer: Customer
 }
 
 defineProps<Props>()
@@ -23,17 +23,31 @@ const handleViewUser = (evt: MouseEvent) => {
 
 <template>
   <CustomCard>
-    <template #title>@{{ user.username }}</template>
-    <template #subtitle>{{ user.email }}</template>
+    <template #title>
+      <Tag rounded>
+        <template #default>
+          <span class="text-2xl"># {{ customer.code }}</span>
+        </template>
+      </Tag>
+    </template>
+    <template #subtitle>
+      <section class="flex flex-col">
+        <span>
+          <i :class="[icons.USER, 'mr-2']" />
+          {{ customer.name }}
+        </span>
+        <span>
+          <i :class="[icons.ENVELOPE, 'mr-2']" />
+          {{ customer.email }}
+        </span>
+      </section>
+    </template>
     <template #content>
-      <div class="flex gap-2">
-        <Tag v-for="(role, index) in user?.roles" :key="index" rounded :value="role" />
-      </div>
       <InfoPopover
         title="Creado por:"
         ref="popRef"
-        :user="user.creator"
-        :created-at="user.createdAt"
+        :user="customer.createdBy"
+        :created-at="customer.createdAt"
       />
     </template>
     <template #footer>

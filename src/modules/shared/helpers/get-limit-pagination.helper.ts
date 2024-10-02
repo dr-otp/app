@@ -1,5 +1,5 @@
 export const getLimitPaginationHelper = (): number => {
   const width = window.innerWidth
 
-  return width > 1280 ? 15 : 10
+  return width > 1280 ? 20 : 12
 }

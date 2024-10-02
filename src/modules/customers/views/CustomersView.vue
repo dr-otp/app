@@ -1,24 +1,23 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { PrimeIcons as icons } from '@primevue/core/api'
+import { ref } from 'vue'
 
 import CustomButton from '@/modules/shared/components/CustomButton.vue'
 import CustomPagination from '@/modules/shared/components/CustomPagination.vue'
 import ListPage from '@/modules/shared/components/ListPage.vue'
 import LoadingListPage from '@/modules/shared/components/LoadingListPage.vue'
+import { usePagination } from '@/modules/shared/composables/usePagination'
 import { useConfigStore } from '@/modules/shared/stores/config.store'
-import VoucherCard from '../components/VoucherCard.vue'
+import CustomerCard from '../components/CustomerCard.vue'
+import { useCustomers } from '../composables/useCustomers'
 
 useConfigStore().setTitle('Vales | OTP')
+const { page } = usePagination()
+const { customers, lastPage, total, isFetching, isLoading } = useCustomers()
 const visible = ref(false)
-const customers = []
 
 const openDialog = () => {
   visible.value = true
-}
-
-const updateDialog = (value: boolean) => {
-  visible.value = value
 }
 </script>
 
@@ -36,11 +35,11 @@ const updateDialog = (value: boolean) => {
       </div>
     </template>
     <template #body>
-      <LoadingListPage v-if="!customers || customers.length === 0" />
-      <!-- <VoucherCard v-for="voucher in customers" :key="voucher.id" :voucher="voucher" /> -->
+      <LoadingListPage v-if="isLoading && isFetching" />
+      <CustomerCard v-for="customer in customers" :key="customer.id" :customer="customer" />
     </template>
     <template #footer>
-      <CustomPagination :page="1" :last-page="1" :total-records="1" />
+      <CustomPagination :page="page" :last-page="lastPage" :total-records="total" />
     </template>
   </ListPage>
 </template>
