@@ -11,7 +11,13 @@ interface Props {
   customer: Customer
 }
 
+interface Emits {
+  (e: 'on:edit', customerId: string): void
+  (e: 'on:delete', customerId: string): void
+}
+
 defineProps<Props>()
+defineEmits<Emits>()
 const popRef = ref<any>(null)
 
 const handleViewUser = (evt: MouseEvent) => {
@@ -61,13 +67,13 @@ const handleViewUser = (evt: MouseEvent) => {
         />
         <CustomButton
           v-tooltip.top="'Editar'"
-          @click="() => console.log('Edit User')"
+          @click="$emit('on:edit', customer.id)"
           :icon="icons.PENCIL"
           severity="info"
         />
         <CustomButton
           v-tooltip.top="'Eliminar'"
-          @click="() => console.log('Delete User')"
+          @click="$emit('on:delete', customer.id)"
           :icon="icons.TRASH"
           severity="danger"
         />

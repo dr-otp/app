@@ -5,7 +5,9 @@ export class Formatter {
    * @param {string | Date} date - The date to format. Can be either a string or a Date object.
    * @returns {string} The formatted date string in 'DD/MM/YYYY' format.
    */
-  public static getDate(date: string | Date): string {
+  public static getDate(date: string | Date | null | undefined): string {
+    if (!date) return ''
+
     //? format into 'DD/MM/YYYY HH:mm:ss'
     const dateStr = typeof date === 'string' ? date : date.toISOString()
     const [datePart] = dateStr.split('T')

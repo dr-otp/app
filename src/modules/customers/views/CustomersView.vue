@@ -2,11 +2,11 @@
 import { PrimeIcons as icons } from '@primevue/core/api'
 import { ref } from 'vue'
 
-import CustomButton from '@/modules/shared/components/CustomButton.vue'
-import CustomPagination from '@/modules/shared/components/CustomPagination.vue'
-import ListPage from '@/modules/shared/components/ListPage.vue'
-import { usePagination } from '@/modules/shared/composables/usePagination'
-import { useConfigStore } from '@/modules/shared/stores/config.store'
+import CustomButton from '@shared/components/CustomButton.vue'
+import CustomPagination from '@shared/components/CustomPagination.vue'
+import ListPage from '@shared/components/ListPage.vue'
+import { usePagination } from '@shared/composables/usePagination'
+import { useConfigStore } from '@shared/stores/config.store'
 import CustomerCard from '../components/CustomerCard.vue'
 import { useCustomers } from '../composables/useCustomers'
 
@@ -42,7 +42,17 @@ const openDialog = () => {
       </div>
     </template>
     <template #body>
-      <CustomerCard v-for="customer in customers" :key="customer.id" :customer="customer" />
+      <CustomerCard
+        v-for="customer in customers"
+        :key="customer.id"
+        :customer="customer"
+        @on:edit="
+          $router.push({
+            name: 'home.customer',
+            params: { customerId: customer.id }
+          })
+        "
+      />
     </template>
     <template #footer>
       <CustomPagination
