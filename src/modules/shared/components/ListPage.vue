@@ -2,6 +2,7 @@
 import { PrimeIcons as icons } from '@primevue/core/api'
 import CustomButton from './CustomButton.vue'
 import { useConfigStore } from '../stores/config.store'
+import { storeToRefs } from 'pinia'
 
 interface Props {
   blockBody: boolean
@@ -15,7 +16,8 @@ withDefaults(defineProps<Props>(), {
 })
 defineEmits(['on:click'])
 
-const { isMobile } = useConfigStore()
+const configStore = useConfigStore()
+const { isMobile } = storeToRefs(configStore)
 </script>
 
 <template>
@@ -32,7 +34,7 @@ const { isMobile } = useConfigStore()
     </div>
   </section>
   <BlockUI :blocked="blockBody">
-    <section class="grid sm:grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-6">
+    <section class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       <slot name="body" />
     </section>
     <section class="py-8">

@@ -31,7 +31,7 @@ export const checkAuthAction = async (): Promise<CheckError | CheckSuccess> => {
     if (isAxiosError(error) && error.response?.status === 401)
       return { ok: false, message: 'No se pudo verificar la sesión' }
 
-    console.log(error)
+    console.error(error)
     throw new Error('No se pudo verificar la sesión')
   }
 }

@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { PrimeIcons as icons } from '@primevue/core/api'
 import { computed } from 'vue'
+import { PrimeIcons as icons } from '@primevue/core/api'
+import { storeToRefs } from 'pinia'
+
 import { useConfigStore } from '../stores/config.store'
 
 interface Props {
@@ -10,7 +12,8 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-const { isMobile } = useConfigStore()
+const configStore = useConfigStore()
+const { isMobile } = storeToRefs(configStore)
 const visiblePages = computed(() => {
   const visible = []
   const startPage = Math.max(1, props.page - 2)

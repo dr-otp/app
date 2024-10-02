@@ -14,7 +14,7 @@ export const getCustomersAction = async (page: number = 1) => {
 
     return data
   } catch (error) {
-    console.log(error)
+    console.error(error)
     throw new Error('Unexpected error')
   }
 }

@@ -43,7 +43,7 @@ const onSubmit = handleSubmit(async ({ username, password }, { resetForm }) => {
 
     resetForm()
   } catch (error) {
-    console.log(error)
+    console.error(error)
     toast.add({
       severity: 'error',
       summary: 'Error',

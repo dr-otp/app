@@ -34,7 +34,7 @@ const items = getMenuOptions(userRoles.value || [])
     </template>
     <template #end>
       <div class="flex items-center gap-2">
-        <InputText placeholder="Search" type="text" class="w-32 sm:w-auto border-none" />
+        <!-- <InputText placeholder="Search" type="text" class="w-32 sm:w-auto border-none" /> -->
         <OptionsMenu />
       </div>
     </template>

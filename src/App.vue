@@ -5,6 +5,7 @@ import { VueQueryDevtools } from '@tanstack/vue-query-devtools'
 import { useRoute, useRouter } from 'vue-router'
 import { AuthStatus } from './modules/auth/interfaces'
 import { useAuthStore } from './modules/auth/store/auth.store'
+import { onMounted } from 'vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -20,23 +21,23 @@ authStore.$subscribe(
       return
     }
 
-    if (authStore.authStatus === AuthStatus.Unauthenticated) {
-      router.replace({ name: 'auth.login' })
-    }
+    if (authStore.authStatus === AuthStatus.Unauthenticated) router.replace({ name: 'auth.login' })
   },
-  {
-    immediate: true
-  }
+  { immediate: true }
 )
 
 configStore.$subscribe(
   async (_, state) => {
     document.title = state.title
   },
-  {
-    immediate: true
-  }
+  { immediate: true }
 )
+
+onMounted(() => {
+  window.addEventListener('resize', () => {
+    configStore.setIsMobile(window.innerWidth <= 768)
+  })
+})
 </script>
 
 <template>

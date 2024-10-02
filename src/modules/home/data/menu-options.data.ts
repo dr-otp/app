@@ -7,7 +7,7 @@ import type { MenuItem } from 'primevue/menuitem'
 
 export const getMenuOptions = (userRoles: UserRoles[]) => {
   const menuItems = [
-    { icon: icons.HOME, route: { name: 'home' } },
+    { icon: icons.HOME, label: 'Inicio', route: { name: 'home' } },
     {
       roles: [UserRoles.Admin, UserRoles.Moderator],
       icon: icons.TICKET,
