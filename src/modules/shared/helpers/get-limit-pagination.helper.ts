@@ -5,5 +5,5 @@ export const getLimitPaginationHelper = (): number => {
 
   if (width > 768) return 12
 
-  return 8
+  return 6
 }

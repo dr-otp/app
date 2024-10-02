@@ -1,14 +1,18 @@
 <script setup lang="ts">
 import { PrimeIcons as icons } from '@primevue/core/api'
-import CustomButton from './CustomButton.vue'
-import { useConfigStore } from '../stores/config.store'
 import { storeToRefs } from 'pinia'
+
+import CustomButton from './CustomButton.vue'
+import LoadingListPage from '@shared/components/LoadingListPage.vue'
+import { useConfigStore } from '../stores/config.store'
 
 interface Props {
   blockBody: boolean
   title: string
   label: string
   btnDisabled: boolean
+  loading: boolean
+  hasData: boolean
 }
 
 withDefaults(defineProps<Props>(), {
@@ -35,7 +39,17 @@ const { isMobile } = storeToRefs(configStore)
   </section>
   <BlockUI :blocked="blockBody">
     <section class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-      <slot name="body" />
+      <LoadingListPage v-if="loading" />
+
+      <article
+        v-if="!hasData && !loading"
+        class="mt-4 col-span-full flex justify-center items-center gap-3 w-full text-4xl text-muted-color-emphasis"
+      >
+        <i :class="[icons.EXCLAMATION_CIRCLE, '!text-4xl']" />
+        <span>No se encontraron registros</span>
+      </article>
+
+      <slot v-else name="body" />
     </section>
     <section class="py-8">
       <slot name="footer" />

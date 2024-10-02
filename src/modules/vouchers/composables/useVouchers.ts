@@ -1,63 +1,56 @@
 import { ref, watchEffect } from 'vue'
 import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/vue-query'
 
-import { usePagination } from '@/modules/shared/composables/usePagination'
-import { getUsersAction } from '../actions/get-users.action'
+import { usePagination } from '@shared/composables/usePagination'
+import { getVouchersAction } from '../actions'
 
-export const useUsers = () => {
+export const useVouchers = () => {
   const queryClient = useQueryClient()
   const { page } = usePagination()
   const lastPage = ref(1)
   const total = ref(0)
 
   const {
-    data: users,
+    data: vouchers,
     isFetching,
     isLoading,
     isPlaceholderData
   } = useQuery({
-    queryKey: ['users', { page }],
-    queryFn: () => getUsers(),
+    queryKey: ['vouchers', { page }],
+    queryFn: () => getVouchers(),
     placeholderData: keepPreviousData
   })
 
   watchEffect(() => {
     if (page.value > 1)
       queryClient.prefetchQuery({
-        queryKey: ['users', { page: page.value - 1 }],
-        queryFn: () => getUsers()
+        queryKey: ['vouchers', { page: page.value - 1 }],
+        queryFn: () => getVouchers()
       })
 
     queryClient.prefetchQuery({
-      queryKey: ['users', { page: page.value + 1 }],
-      queryFn: () => getUsers()
+      queryKey: ['vouchers', { page: page.value + 1 }],
+      queryFn: () => getVouchers()
     })
   })
 
-  const getUsers = async () => {
-    const { data, meta } = await getUsersAction(page.value)
+  const getVouchers = async () => {
+    const { data, meta } = await getVouchersAction(page.value)
     lastPage.value = meta.lastPage
     total.value = meta.total
     return data
   }
 
-  const refreshUsers = () => {
-    queryClient.refetchQueries({
-      queryKey: ['users', { page }]
-    })
-  }
-
   return {
     //* Props
-    users,
+    vouchers,
     lastPage,
     total,
     isFetching,
     isLoading,
-    isPlaceholderData,
+    isPlaceholderData
 
     //! Getters
     //? Methods
-    refreshUsers
   }
 }

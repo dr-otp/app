@@ -9,6 +9,7 @@ interface Props {
   totalRecords: number
   page: number
   lastPage: number
+  loading: boolean
 }
 
 const props = defineProps<Props>()
@@ -26,7 +27,7 @@ const visiblePages = computed(() => {
 </script>
 
 <template>
-  <div class="flex justify-center items-center py-10 gap-2" v-if="lastPage > 1">
+  <article class="flex justify-center items-center py-10 gap-2" v-if="lastPage > 1">
     <Button
       text
       rounded
@@ -73,7 +74,14 @@ const visiblePages = computed(() => {
       :class="{ disabled: page === lastPage }"
       @click="$router.push({ query: { page: lastPage } })"
     />
-  </div>
+  </article>
+  <article v-if="loading" class="flex justify-center items-center py-10 gap-2">
+    <Skeleton shape="circle" width="3rem" height="3rem" />
+    <Skeleton shape="circle" width="3rem" height="3rem" />
+    <Skeleton width="15rem" height="3rem" borderRadius="16px" />
+    <Skeleton shape="circle" width="3rem" height="3rem" />
+    <Skeleton shape="circle" width="3rem" height="3rem" />
+  </article>
 </template>
 
 <style scoped>

@@ -5,13 +5,12 @@ import { ref } from 'vue'
 import CustomButton from '@/modules/shared/components/CustomButton.vue'
 import CustomPagination from '@/modules/shared/components/CustomPagination.vue'
 import ListPage from '@/modules/shared/components/ListPage.vue'
-import LoadingListPage from '@/modules/shared/components/LoadingListPage.vue'
 import { usePagination } from '@/modules/shared/composables/usePagination'
 import { useConfigStore } from '@/modules/shared/stores/config.store'
 import CustomerCard from '../components/CustomerCard.vue'
 import { useCustomers } from '../composables/useCustomers'
 
-useConfigStore().setTitle('Vales | OTP')
+useConfigStore().setTitle('Clientes | OTP')
 const { page } = usePagination()
 const { customers, lastPage, total, isFetching, isLoading, isPlaceholderData } = useCustomers()
 const visible = ref(false)
@@ -28,6 +27,8 @@ const openDialog = () => {
     label="Nuevo Cliente"
     @on:click="() => {}"
     :btn-disabled="isLoading && !isPlaceholderData"
+    :loading="isLoading && !isPlaceholderData"
+    :has-data="!!customers && customers.length > 0"
   >
     <template #header>
       <div class="flex justify-between">
@@ -41,11 +42,15 @@ const openDialog = () => {
       </div>
     </template>
     <template #body>
-      <LoadingListPage v-if="isLoading && !isPlaceholderData" />
       <CustomerCard v-for="customer in customers" :key="customer.id" :customer="customer" />
     </template>
     <template #footer>
-      <CustomPagination :page="page" :last-page="lastPage" :total-records="total" />
+      <CustomPagination
+        :page="page"
+        :last-page="lastPage"
+        :total-records="total"
+        :loading="isLoading && !isPlaceholderData"
+      />
     </template>
   </ListPage>
 </template>

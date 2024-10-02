@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import CustomPagination from '@shared/components/CustomPagination.vue'
 import ListPage from '@shared/components/ListPage.vue'
-import LoadingListPage from '@shared/components/LoadingListPage.vue'
 import { usePagination } from '@shared/composables/usePagination'
 import { useConfigStore } from '@shared/stores/config.store'
 import UserCard from '../components/UserCard.vue'
@@ -23,13 +22,19 @@ const handleNewUser = () => {
     label="Nuevo Usuario"
     @on:click="handleNewUser"
     :btn-disabled="isLoading && !isPlaceholderData"
+    :loading="isLoading && !isPlaceholderData"
+    :has-data="!!users && users.length > 0"
   >
     <template #body>
-      <LoadingListPage v-if="isLoading && !isPlaceholderData" />
-      <UserCard v-else v-for="user in users" :key="user.id" :user="user" />
+      <UserCard v-for="user in users" :key="user.id" :user="user" />
     </template>
     <template #footer>
-      <CustomPagination :page="page" :last-page="lastPage" :total-records="total" />
+      <CustomPagination
+        :page="page"
+        :last-page="lastPage"
+        :total-records="total"
+        :loading="isLoading && !isPlaceholderData"
+      />
     </template>
   </ListPage>
 </template>

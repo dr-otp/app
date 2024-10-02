@@ -11,7 +11,7 @@ export const useCustomers = () => {
   const total = ref(0)
 
   const {
-    data: customers = [],
+    data: customers,
     isFetching,
     isLoading,
     isPlaceholderData
