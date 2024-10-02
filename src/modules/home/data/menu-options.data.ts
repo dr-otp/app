@@ -5,7 +5,7 @@ import type { MenuItem } from 'primevue/menuitem'
 
 // src/menuOptions.js
 
-export const getMenuOptions = (userRoles: UserRoles) => {
+export const getMenuOptions = (userRoles: UserRoles[]) => {
   const menuItems = [
     { icon: icons.HOME, route: { name: 'home' } },
     {
@@ -27,7 +27,7 @@ export const getMenuOptions = (userRoles: UserRoles) => {
       route: { name: 'home.customers' }
     }
   ]
-  const filterMenuItems = (items: MenuItem[], userRoles: UserRoles) => {
+  const filterMenuItems = (items: MenuItem[], userRoles: UserRoles[]) => {
     return items
       .filter((item) => hasRole(item.roles, userRoles))
       .map((item) => {

@@ -13,7 +13,7 @@ import { useCustomers } from '../composables/useCustomers'
 
 useConfigStore().setTitle('Vales | OTP')
 const { page } = usePagination()
-const { customers, lastPage, total, isFetching, isLoading } = useCustomers()
+const { customers, lastPage, total, isFetching, isLoading, isPlaceholderData } = useCustomers()
 const visible = ref(false)
 
 const openDialog = () => {
@@ -22,7 +22,7 @@ const openDialog = () => {
 </script>
 
 <template>
-  <ListPage>
+  <ListPage :blockBody="isFetching && isPlaceholderData">
     <template #header>
       <div class="flex justify-between">
         <h1 class="text-4xl font-semibold">Clientes</h1>
@@ -35,7 +35,7 @@ const openDialog = () => {
       </div>
     </template>
     <template #body>
-      <LoadingListPage v-if="isLoading && isFetching" />
+      <LoadingListPage v-if="isLoading && !isPlaceholderData" />
       <CustomerCard v-for="customer in customers" :key="customer.id" :customer="customer" />
     </template>
     <template #footer>

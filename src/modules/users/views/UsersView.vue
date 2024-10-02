@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { PrimeIcons as icons } from '@primevue/core/api'
 
-import CustomButton from '@/modules/shared/components/CustomButton.vue'
-import CustomPagination from '@/modules/shared/components/CustomPagination.vue'
-import ListPage from '@/modules/shared/components/ListPage.vue'
-import LoadingListPage from '@/modules/shared/components/LoadingListPage.vue'
-import { usePagination } from '@/modules/shared/composables/usePagination'
-import { useConfigStore } from '@/modules/shared/stores/config.store'
+import CustomButton from '@shared/components/CustomButton.vue'
+import CustomPagination from '@shared/components/CustomPagination.vue'
+import ListPage from '@shared/components/ListPage.vue'
+import LoadingListPage from '@shared/components/LoadingListPage.vue'
+import { usePagination } from '@shared/composables/usePagination'
+import { useConfigStore } from '@shared/stores/config.store'
 import UserCard from '../components/UserCard.vue'
 import { useUsers } from '../composables/useUsers'
 
 useConfigStore().setTitle('Usuarios | OTP')
-const { users, lastPage, total, isFetching, isLoading } = useUsers()
+const { users, lastPage, total, isFetching, isLoading, isPlaceholderData } = useUsers()
 const { page } = usePagination()
 
 const handleNewUser = () => {
@@ -20,7 +20,7 @@ const handleNewUser = () => {
 </script>
 
 <template>
-  <ListPage>
+  <ListPage :blockBody="isFetching && isPlaceholderData">
     <template #header>
       <div class="flex justify-between">
         <h1 class="text-4xl font-semibold">Usuarios</h1>
@@ -34,7 +34,7 @@ const handleNewUser = () => {
       </div>
     </template>
     <template #body>
-      <LoadingListPage v-if="isLoading && isFetching" />
+      <LoadingListPage v-if="isLoading && !isPlaceholderData" />
       <UserCard v-else v-for="user in users" :key="user.id" :user="user" />
     </template>
     <template #footer>

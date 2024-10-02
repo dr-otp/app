@@ -38,6 +38,7 @@ export const useConfigStore = defineStore('config', () => {
 
     //* Getters
     darkTheme: computed(() => theme.value === 'dark'),
+    isMobile: computed(() => window.innerWidth <= 768),
 
     //! Actions
     setAppTheme,

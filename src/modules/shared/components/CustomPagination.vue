@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { PrimeIcons as icons } from '@primevue/core/api'
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
+import { useConfigStore } from '../stores/config.store'
 
 interface Props {
   totalRecords: number
@@ -9,7 +10,7 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-const isMobile = ref(window.innerWidth <= 768)
+const { isMobile } = useConfigStore()
 const visiblePages = computed(() => {
   const visible = []
   const startPage = Math.max(1, props.page - 2)
@@ -40,9 +41,7 @@ const visiblePages = computed(() => {
       @click="$router.push({ query: { page: page - 1 } })"
     />
 
-    <span v-if="isMobile" class="mx-4 dark:text-muted-color">
-      Página {{ page }} de {{ lastPage }}
-    </span>
+    <span v-if="isMobile" class="mx-4 dark:text-muted-color">{{ page }} de {{ lastPage }}</span>
 
     <Button
       v-else

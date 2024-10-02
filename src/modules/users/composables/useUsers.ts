@@ -1,5 +1,5 @@
-import { useQuery, useQueryClient } from '@tanstack/vue-query'
 import { ref, watchEffect } from 'vue'
+import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/vue-query'
 
 import { usePagination } from '@/modules/shared/composables/usePagination'
 import { getUsersAction } from '../actions/get-users.action'
@@ -13,10 +13,12 @@ export const useUsers = () => {
   const {
     data: users = [],
     isFetching,
-    isLoading
+    isLoading,
+    isPlaceholderData
   } = useQuery({
     queryKey: ['users', { page }],
-    queryFn: () => getUsers()
+    queryFn: () => getUsers(),
+    placeholderData: keepPreviousData
   })
 
   watchEffect(() => {
@@ -39,15 +41,23 @@ export const useUsers = () => {
     return data
   }
 
+  const refreshUsers = () => {
+    queryClient.refetchQueries({
+      queryKey: ['users', { page }]
+    })
+  }
+
   return {
     //* Props
     users,
     lastPage,
     total,
     isFetching,
-    isLoading
+    isLoading,
+    isPlaceholderData,
 
     //! Getters
     //? Methods
+    refreshUsers
   }
 }
