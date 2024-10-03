@@ -1,15 +1,17 @@
 <script setup lang="ts">
 import type { CardSlots } from 'primevue/card'
 
+import type { UserSummary } from '@/modules/auth/interfaces'
+
 interface Props {
   deleted?: boolean
+  createdBy?: UserSummary | null
+  createdAt?: string | Date
 }
 
-withDefaults(defineProps<Props>(), {
-  deleted: false
-})
-// Define the slots for the Card component
+withDefaults(defineProps<Props>(), { deleted: false })
 defineSlots<CardSlots>()
+defineEmits(['on:info', 'on:edit', 'on:delete'])
 </script>
 
 <template>

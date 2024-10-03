@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import CustomButton from '../components/CustomButton.vue'
-import CustomCard from '../components/CustomCard.vue'
+import BaseCard from '../components/BaseCard.vue'
 </script>
 
 <template>
   <!-- component -->
-  <CustomCard class="sm:w-full md:w-1/2 xl:w-2/5 m-auto max-w-[30rem]">
+  <BaseCard class="sm:w-full md:w-1/2 xl:w-2/5 m-auto max-w-[30rem]">
     <template #content>
       <section class="flex flex-col justify-center items-center">
         <p class="text-6xl md:text-7xl lg:text-9xl font-bold tracking-wider">404</p>
@@ -25,5 +25,5 @@ import CustomCard from '../components/CustomCard.vue'
         />
       </section>
     </template>
-  </CustomCard>
+  </BaseCard>
 </template>

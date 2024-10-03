@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useAuthStore } from '@/modules/auth/store/auth.store'
-import { useConfigStore } from '@/modules/shared/stores/config.store'
+import { useConfigStore } from '@shared/stores/config.store'
 
 const authStore = useAuthStore()
 const configStore = useConfigStore()

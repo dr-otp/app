@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useAuthStore } from '@/modules/auth/store/auth.store'
-import CustomCard from '@/modules/shared/components/CustomCard.vue'
-import { useConfigStore } from '@/modules/shared/stores/config.store'
+import BaseCard from '@shared/components/BaseCard.vue'
+import { useConfigStore } from '@shared/stores/config.store'
 import { storeToRefs } from 'pinia'
 
 const authStore = useAuthStore()
@@ -10,7 +10,7 @@ useConfigStore().setTitle('Perfil | OTP')
 </script>
 
 <template>
-  <CustomCard class="dark:bg-gray-900 border dark:border-gray-700">
+  <BaseCard class="dark:bg-gray-900 border dark:border-gray-700">
     <template #content>
       <!-- banner -->
       <section class="w-full h-[15rem]">
@@ -32,7 +32,7 @@ useConfigStore().setTitle('Perfil | OTP')
         </div>
       </section>
     </template>
-  </CustomCard>
+  </BaseCard>
 </template>
 
 <style scoped></style>

@@ -5,7 +5,7 @@ import type { MenuItem } from 'primevue/menuitem'
 import { ref } from 'vue'
 
 import { useAuthStore } from '@/modules/auth/store/auth.store'
-import { useConfigStore } from '@/modules/shared/stores/config.store'
+import { useConfigStore } from '@shared/stores/config.store'
 import { storeToRefs } from 'pinia'
 
 const authStore = useAuthStore()

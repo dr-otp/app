@@ -2,13 +2,13 @@
 import { PrimeIcons as icons } from '@primevue/core/api'
 import { ref } from 'vue'
 
-import CustomButton from '@/modules/shared/components/CustomButton.vue'
-import CustomPagination from '@/modules/shared/components/CustomPagination.vue'
-import ListPage from '@/modules/shared/components/ListPage.vue'
-import { useConfigStore } from '@/modules/shared/stores/config.store'
+import CustomButton from '@shared/components/CustomButton.vue'
+import CustomPagination from '@shared/components/CustomPagination.vue'
+import ListPage from '@shared/components/ListPage.vue'
+import { useConfigStore } from '@shared/stores/config.store'
 import VoucherCard from '../components/VoucherCard.vue'
 import { useVouchers } from '../composables/useVouchers'
-import { usePagination } from '@/modules/shared/composables/usePagination'
+import { usePagination } from '@shared/composables/usePagination'
 
 useConfigStore().setTitle('Vales | OTP')
 const { vouchers, total, lastPage, isLoading, isFetching, isPlaceholderData } = useVouchers()

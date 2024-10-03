@@ -1,6 +1,6 @@
 import { otpApi } from '@/api/otpApi'
-import { getLimitPaginationHelper } from '@/modules/shared/helpers'
-import type { ApiListResponse } from '@/modules/shared/interfaces'
+import { getLimitPaginationHelper } from '@shared/helpers'
+import type { ApiListResponse } from '@shared/interfaces'
 import type { Customer } from '../interfaces/customer.interface'
 
 export const getCustomersAction = async (page: number = 1) => {

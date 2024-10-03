@@ -1,5 +1,5 @@
 import { UserRoles } from '@/modules/auth/interfaces'
-import { hasRole } from '@/modules/shared/helpers'
+import { hasRole } from '@shared/helpers'
 import { PrimeIcons as icons } from '@primevue/core/api'
 import type { MenuItem } from 'primevue/menuitem'
 

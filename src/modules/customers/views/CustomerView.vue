@@ -2,7 +2,7 @@
 
 <template>
   <section class="flex justify-center" v-if="customer">
-    <CustomCard class="w-full max-w-[50rem]" :deleted="!!customer.deletedAt">
+    <BaseCard class="w-full max-w-[50rem]" :deleted="!!customer.deletedAt">
       <template #title>
         <section class="flex gap-2">
           <h2 class="text-2xl font-semibold flex items-center flex-wrap gap-2 flex-1">
@@ -113,7 +113,7 @@
           </div>
         </form>
       </template>
-    </CustomCard>
+    </BaseCard>
   </section>
 </template>
 

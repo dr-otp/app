@@ -1,29 +1,20 @@
 <script setup lang="ts">
 import { PrimeIcons as icons } from '@primevue/core/api'
 import { useToast } from 'primevue/usetoast'
-import { ref, watch } from 'vue'
+import { watch } from 'vue'
 
-import CustomButton from '@shared/components/CustomButton.vue'
-import CustomCard from '@shared/components/CustomCard.vue'
+import ButtonsCard from '@shared/components/ButtonsCard.vue'
 import InfoPopover from '@shared/components/InfoPopover.vue'
-import type { Customer } from '../interfaces/customer.interface'
 import { useCustomer } from '../composables'
-import { useAuthStore } from '@/modules/auth/store/auth.store'
+import type { Customer } from '../interfaces/customer.interface'
 
 interface Props {
   customer: Customer
 }
 
 defineProps<Props>()
-const popRef = ref<any>(null)
 const toast = useToast()
-const authStore = useAuthStore()
 const { deleteMutation, isDeletePending, isDeleteSuccess, deletedCustomer } = useCustomer()
-const handleViewUser = (evt: MouseEvent) => {
-  if (!popRef.value) return
-
-  popRef.value.open(evt)
-}
 
 watch(isDeleteSuccess, (value) => {
   if (!value) return
@@ -40,7 +31,13 @@ watch(isDeleteSuccess, (value) => {
 
 <template>
   <BlockUI :blocked="isDeletePending">
-    <CustomCard :deleted="!!customer.deletedAt">
+    <ButtonsCard
+      :deleted="!!customer.deletedAt"
+      :created-by="customer.createdBy"
+      :created-at="customer.createdAt"
+      @on:edit="$router.push({ name: 'home.customer', params: { customerCode: customer.code } })"
+      @on:delete="deleteMutation({ customerId: customer.id, isDeleted: !!customer.deletedAt })"
+    >
       <template #title>
         <Tag rounded>
           <template #default>
@@ -68,39 +65,7 @@ watch(isDeleteSuccess, (value) => {
           :created-at="customer.createdAt"
         />
       </template>
-      <template #footer>
-        <section class="flex justify-between flex-row-reverse gap-2">
-          <section class="flex gap-2">
-            <CustomButton
-              v-tooltip.top="'Info'"
-              @click="handleViewUser"
-              :icon="icons.INFO"
-              icon-class="text-3xl"
-              severity="contrast"
-            />
-            <CustomButton
-              v-tooltip.top="'Editar'"
-              @click="
-                $router.push({
-                  name: 'home.customer',
-                  params: { customerCode: customer.code }
-                })
-              "
-              :icon="icons.PENCIL"
-              severity="info"
-            />
-            <CustomButton
-              v-tooltip.top="customer.deletedAt ? 'Restaurar' : 'Eliminar'"
-              @click="deleteMutation({ customerId: customer.id, isDeleted: !!customer.deletedAt })"
-              :icon="customer.deletedAt ? icons.UNDO : icons.TRASH"
-              :severity="customer.deletedAt ? 'secondary' : 'danger'"
-              v-if="authStore.isAdmin"
-            />
-          </section>
-          <Tag v-if="!!customer.deletedAt" severity="danger">Eliminado</Tag>
-        </section>
-      </template>
-    </CustomCard>
+    </ButtonsCard>
   </BlockUI>
 </template>
 

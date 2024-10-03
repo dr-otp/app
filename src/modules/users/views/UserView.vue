@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useConfigStore } from '@/modules/shared/stores/config.store'
+import { useConfigStore } from '@shared/stores/config.store'
 
 useConfigStore().setTitle('Usuario | OTP')
 </script>

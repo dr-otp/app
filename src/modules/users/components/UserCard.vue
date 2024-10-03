@@ -4,7 +4,7 @@ import { ref } from 'vue'
 
 import type { User } from '@/modules/auth/interfaces'
 import CustomButton from '@shared/components/CustomButton.vue'
-import CustomCard from '@shared/components/CustomCard.vue'
+import BaseCard from '@shared/components/BaseCard.vue'
 import InfoPopover from '@shared/components/InfoPopover.vue'
 
 interface Props {
@@ -22,7 +22,7 @@ const handleViewUser = (evt: MouseEvent) => {
 </script>
 
 <template>
-  <CustomCard>
+  <BaseCard>
     <template #title>@{{ user.username }}</template>
     <template #subtitle>{{ user.email }}</template>
     <template #content>
@@ -59,7 +59,7 @@ const handleViewUser = (evt: MouseEvent) => {
         />
       </section>
     </template>
-  </CustomCard>
+  </BaseCard>
 </template>
 
 <style scoped></style>

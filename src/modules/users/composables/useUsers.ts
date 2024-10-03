@@ -1,7 +1,7 @@
 import { ref, watchEffect } from 'vue'
 import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/vue-query'
 
-import { usePagination } from '@/modules/shared/composables/usePagination'
+import { usePagination } from '@shared/composables/usePagination'
 import { getUsersAction } from '../actions/get-users.action'
 
 export const useUsers = () => {

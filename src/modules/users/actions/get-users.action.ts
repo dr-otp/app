@@ -1,7 +1,7 @@
 import { otpApi } from '@/api/otpApi'
 import type { User } from '@/modules/auth/interfaces'
-import { getLimitPaginationHelper } from '@/modules/shared/helpers'
-import type { ApiListResponse } from '@/modules/shared/interfaces'
+import { getLimitPaginationHelper } from '@shared/helpers'
+import type { ApiListResponse } from '@shared/interfaces'
 
 export const getUsersAction = async (page: number = 1): Promise<ApiListResponse<User>> => {
   try {

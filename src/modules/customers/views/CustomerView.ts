@@ -6,7 +6,6 @@ import { computed, defineComponent, watch, watchEffect } from 'vue'
 import { useRouter } from 'vue-router'
 
 import CustomButton from '@shared/components/CustomButton.vue'
-import CustomCard from '@shared/components/CustomCard.vue'
 import CustomInputText from '@shared/components/CustomInputText.vue'
 import MenuPopup from '@shared/components/MenuPopup.vue'
 import { Formatter } from '@shared/helpers'
@@ -14,12 +13,13 @@ import { useConfigStore } from '@shared/stores/config.store'
 import { getCustomerAction } from '../actions'
 import { useCustomer } from '../composables'
 import { customerSchema } from '../schemas/customer.schema'
+import BaseCard from '@shared/components/BaseCard.vue'
 
 export default defineComponent({
   props: {
     customerCode: { type: String, required: true }
   },
-  components: { CustomCard, CustomInputText, CustomButton, MenuPopup },
+  components: { BaseCard, CustomInputText, CustomButton, MenuPopup },
   setup: (props) => {
     useConfigStore().setTitle('Cliente | OTP')
 
