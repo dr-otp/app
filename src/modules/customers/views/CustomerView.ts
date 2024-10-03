@@ -1,5 +1,5 @@
 import { PrimeIcons as icons } from '@primevue/core/api'
-import { useMutation, useQuery } from '@tanstack/vue-query'
+import { useQuery } from '@tanstack/vue-query'
 import { useToast } from 'primevue/usetoast'
 import { useForm } from 'vee-validate'
 import { computed, defineComponent, watch, watchEffect } from 'vue'
@@ -11,12 +11,8 @@ import CustomInputText from '@shared/components/CustomInputText.vue'
 import MenuPopup from '@shared/components/MenuPopup.vue'
 import { Formatter } from '@shared/helpers'
 import { useConfigStore } from '@shared/stores/config.store'
-import {
-  createUpdateCustomerAction,
-  deleteRestoreCustomerAction,
-  getCustomerAction
-} from '../actions'
-import type { DeleteRestoreCustomer } from '../interfaces'
+import { getCustomerAction } from '../actions'
+import { useCustomer } from '../composables'
 import { customerSchema } from '../schemas/customer.schema'
 
 export default defineComponent({
@@ -29,6 +25,17 @@ export default defineComponent({
 
     const router = useRouter()
     const toast = useToast()
+    const {
+      updateMutation,
+      isUpdatePending,
+      isUpdateSuccess,
+      updatedCustomer,
+
+      deleteMutation,
+      isDeletePending,
+      isDeleteSuccess,
+      deletedCustomer
+    } = useCustomer()
     const { defineField, errors, handleSubmit, resetForm, meta } = useForm({
       validationSchema: customerSchema
     })
@@ -44,25 +51,6 @@ export default defineComponent({
       queryKey: ['customer', props.customerCode],
       queryFn: () => getCustomerAction(props.customerCode),
       retry: false
-    })
-
-    const {
-      mutate: updateMutation,
-      isPending: isUpdatePending,
-      isSuccess: isUpdateSuccess,
-      data: updatedCustomer
-    } = useMutation({
-      mutationFn: createUpdateCustomerAction
-    })
-
-    const {
-      mutate: deleteMutation,
-      isPending: isDeletePending,
-      isSuccess: isDeleteSuccess,
-      data: deletedCustomer
-    } = useMutation({
-      mutationFn: ({ customerId, isDeleted }: DeleteRestoreCustomer) =>
-        deleteRestoreCustomerAction(customerId, isDeleted)
     })
 
     const onSubmit = handleSubmit(async (values) => updateMutation(values))
@@ -112,10 +100,12 @@ export default defineComponent({
       }
 
       if (deleteSuccess) {
+        const isDeleted = deletedCustomer.value?.deletedAt
+
         toast.add({
-          severity: 'warn',
+          severity: isDeleted ? 'error' : 'info',
           summary: 'Éxito',
-          detail: 'Cliente eliminado correctamente',
+          detail: `Cliente ${isDeleted ? 'eliminado' : 'restaurado'} correctamente`,
           life: 1000
         })
 

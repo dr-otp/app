@@ -15,9 +15,9 @@ defineSlots<CardSlots>()
 <template>
   <Card
     :class="[
-      'dark:bg-dark-950 dark:border-gray-700',
-      { 'border border-primary-400': !deleted },
-      { 'border-2 border-red-500 dark:border-red-600': deleted }
+      'dark:bg-dark-950 dark:border-gray-700 border',
+      { ' border-primary-400': !deleted },
+      { 'border-red-500 dark:border-red-600': deleted }
     ]"
   >
     <!-- Use the slots here -->

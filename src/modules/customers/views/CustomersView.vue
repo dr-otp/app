@@ -22,17 +22,7 @@ const { customers, lastPage, total, isFetching, isLoading, isPlaceholderData } =
     @on:click="$router.push({ name: 'home.customer', params: { customerCode: 'nuevo' } })"
   >
     <template #body>
-      <CustomerCard
-        v-for="customer in customers"
-        :key="customer.id"
-        :customer="customer"
-        @on:edit="
-          $router.push({
-            name: 'home.customer',
-            params: { customerCode: customer.code }
-          })
-        "
-      />
+      <CustomerCard v-for="customer in customers" :key="customer.id" :customer="customer" />
     </template>
     <template #footer>
       <CustomPagination

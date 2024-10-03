@@ -32,7 +32,7 @@ defineExpose({ open, close })
 <template>
   <Popover ref="op">
     <div class="flex flex-col">
-      <span class="font-medium block mb-2">{{ title }}:</span>
+      <span class="font-medium block mb-2">{{ title }}</span>
 
       <span class="flex items-center text-muted-color">
         <i :class="icons.USER"></i>

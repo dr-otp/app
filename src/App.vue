@@ -1,16 +1,19 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useQueryClient } from '@tanstack/vue-query'
+import { VueQueryDevtools } from '@tanstack/vue-query-devtools'
+
 import FullscreenLoader from '@shared/components/FullscreenLoader.vue'
 import { useConfigStore } from '@shared/stores/config.store'
-import { VueQueryDevtools } from '@tanstack/vue-query-devtools'
-import { useRoute, useRouter } from 'vue-router'
 import { AuthStatus } from './modules/auth/interfaces'
 import { useAuthStore } from './modules/auth/store/auth.store'
-import { onMounted } from 'vue'
 
 const router = useRouter()
 const route = useRoute()
 const authStore = useAuthStore()
 const configStore = useConfigStore()
+const queryClient = useQueryClient()
 
 configStore.setAppTheme()
 
@@ -21,7 +24,10 @@ authStore.$subscribe(
       return
     }
 
-    if (authStore.authStatus === AuthStatus.Unauthenticated) router.replace({ name: 'auth.login' })
+    if (authStore.authStatus === AuthStatus.Unauthenticated) {
+      router.replace({ name: 'auth.login' })
+      queryClient.clear()
+    }
 
     if (authStore.authStatus === AuthStatus.Checking) {
       configStore.setTitle('Autenticando...')
