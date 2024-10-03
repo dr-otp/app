@@ -8,7 +8,7 @@ export interface Customer {
   createdAt: Date
   updatedAt: Date
   deletedAt: null
-  createdBy: UserSummary
+  createdBy: UserSummary | null
   updatedBy: UserSummary | null
   deletedBy: UserSummary | null
 }

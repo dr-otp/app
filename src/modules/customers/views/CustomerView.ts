@@ -10,6 +10,8 @@ import { Formatter } from '@shared/helpers'
 import { useConfigStore } from '@shared/stores/config.store'
 import { getCustomerAction, createUpdateCustomerAction } from '../actions'
 import { customerSchema } from '../schemas/customer.schema'
+import { useToast } from 'primevue/usetoast'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   props: {
@@ -19,7 +21,11 @@ export default defineComponent({
   setup: (props) => {
     useConfigStore().setTitle('Cliente | OTP')
 
-    const { defineField, errors, handleSubmit } = useForm({ validationSchema: customerSchema })
+    const router = useRouter()
+    const toast = useToast()
+    const { defineField, errors, handleSubmit, resetForm, meta } = useForm({
+      validationSchema: customerSchema
+    })
     const [name, nameAttrs] = defineField('name')
     const [email, emailAttrs] = defineField('email')
 
@@ -38,26 +44,53 @@ export default defineComponent({
       mutate,
       isPending,
       isSuccess: isUpdateSuccess,
-      data: updatedProduct
+      data: updatedCustomer
     } = useMutation({
       mutationFn: createUpdateCustomerAction
     })
 
     const onSubmit = handleSubmit(async (values) => {
-      console.log('onSubmit Llamado')
-      console.log(values)
-
-      // mutate(values)
+      mutate(values)
     })
 
-    watch(customer, () => {
-      if (customer) useConfigStore().setTitle(`Cliente ${customer.value?.name} | OTP`)
+    watch(
+      customer,
+      () => {
+        if (!customer) return
+
+        useConfigStore().setTitle(`Cliente ${customer.value?.name} | OTP`)
+        resetForm({ values: customer.value })
+      },
+      { deep: true, immediate: true }
+    )
+
+    watch(isUpdateSuccess, (value) => {
+      if (!value) return
+
+      toast.add({
+        severity: 'success',
+        summary: 'Éxito',
+        detail: 'Inicio de sesión exitoso',
+        life: 1000
+      })
+      router.replace({
+        name: 'home.customer',
+        params: { customerId: updatedCustomer.value.id }
+      })
+
+      resetForm({ values: updatedCustomer.value })
     })
+
+    watch(
+      () => props.customerId,
+      () => refetch()
+    )
 
     return {
       //* Props
       customer,
       icons,
+      isPending,
 
       //* Form fields
       name,
@@ -66,6 +99,7 @@ export default defineComponent({
       emailAttrs,
       errors,
       handleSubmit,
+      meta,
 
       //! Getters
       //? Methods

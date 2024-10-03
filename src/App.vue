@@ -22,6 +22,11 @@ authStore.$subscribe(
     }
 
     if (authStore.authStatus === AuthStatus.Unauthenticated) router.replace({ name: 'auth.login' })
+
+    if (authStore.authStatus === AuthStatus.Checking) {
+      configStore.setTitle('Autenticando...')
+      return
+    }
   },
   { immediate: true }
 )

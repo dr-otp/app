@@ -75,12 +75,15 @@ const visiblePages = computed(() => {
       @click="$router.push({ query: { page: lastPage } })"
     />
   </article>
-  <article v-if="loading" class="flex justify-center items-center py-10 gap-2">
-    <Skeleton shape="circle" width="3rem" height="3rem" />
-    <Skeleton shape="circle" width="3rem" height="3rem" />
-    <Skeleton width="15rem" height="3rem" borderRadius="16px" />
-    <Skeleton shape="circle" width="3rem" height="3rem" />
-    <Skeleton shape="circle" width="3rem" height="3rem" />
+  <article
+    v-if="loading"
+    class="flex justify-center items-center py-10 gap-2 sm:w-full md:max-w-[22rem] m-auto"
+  >
+    <Skeleton shape="circle" width="15%" height="3rem" />
+    <Skeleton shape="circle" width="15%" height="3rem" />
+    <Skeleton width="40%" height="3rem" borderRadius="16px" />
+    <Skeleton shape="circle" width="15%" height="3rem" />
+    <Skeleton shape="circle" width="15%" height="3rem" />
   </article>
 </template>
 

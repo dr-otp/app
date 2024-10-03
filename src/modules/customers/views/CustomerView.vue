@@ -4,41 +4,48 @@
   <section class="flex justify-center" v-if="customer">
     <CustomCard class="lg:w-3/4 xl:w-2/3 sm:w-full" :deleted="customer.deletedAt">
       <template #title>
-        <h2 class="text-2xl font-semibold flex items-center flex-wrap gap-2">
-          <span>Información del cliente</span>
-          <Tag rounded>
-            <template #default>
-              <span class="text-2xl"># {{ customer.code }}</span>
-            </template>
-          </Tag>
-          <Tag v-if="customer.deletedAt" severity="danger"> Eliminado </Tag>
-        </h2>
+        <section class="flex gap-2">
+          <h2 class="text-2xl font-semibold flex items-center flex-wrap gap-2">
+            <Button
+              v-tooltip.top="'Regresar'"
+              @click="$router.push({ name: 'home.customers' })"
+              :icon="icons.ANGLE_LEFT"
+              icon-class="text-3xl"
+              text
+              rounded
+            />
+            <span>Cliente</span>
+            <Tag rounded>
+              <template #default>
+                <span class="text-2xl"># {{ customer.code }}</span>
+              </template>
+            </Tag>
+            <Tag v-if="customer.deletedAt" severity="danger"> Eliminado </Tag>
+          </h2>
+        </section>
       </template>
       <template #content>
         <form @submit="onSubmit" class="flex flex-col gap-6" v-focustrap>
           <!-- Code -->
-          <div class="flex flex-col">
-            <CustomInputText
-              id="name"
-              label="Nombre"
-              v-model="name"
-              v-bind="nameAttrs"
-              :error="errors.name"
-              autofocus
-            />
-          </div>
+
+          <CustomInputText
+            id="name"
+            label="Nombre"
+            v-model="name"
+            v-bind="nameAttrs"
+            :error="errors.name"
+            autofocus
+          />
 
           <!-- Email -->
-          <div class="flex flex-col">
-            <CustomInputText
-              id="email"
-              label="Email"
-              v-model="email"
-              v-bind="emailAttrs"
-              :error="errors.email"
-              autofocus
-            />
-          </div>
+          <CustomInputText
+            id="email"
+            label="Email"
+            v-model="email"
+            v-bind="emailAttrs"
+            :error="errors.email"
+            autofocus
+          />
 
           <!-- Meta Data (Read-only) -->
           <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
@@ -92,8 +99,13 @@
 
           <!-- Submit Button -->
           <div class="flex flex-row-reverse flex-wrap gap-2">
-            <CustomButton label="Guardar cambios" :disabled="true" />
-            <CustomButton v-if="true" label="Restaurar" severity="info" />
+            <CustomButton
+              type="submit"
+              label="Guardar cambios"
+              :disabled="(!meta.dirty && meta.valid) || isPending"
+              :loading="isPending"
+            />
+            <CustomButton v-if="customer.deletedAt" label="Restaurar" severity="info" />
           </div>
         </form>
       </template>
