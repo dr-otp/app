@@ -3,7 +3,17 @@ import { hasRole } from '@/modules/shared/helpers'
 import { PrimeIcons as icons } from '@primevue/core/api'
 import type { MenuItem } from 'primevue/menuitem'
 
-// src/menuOptions.js
+const filterMenuItems = (items: MenuItem[], userRoles: UserRoles[]) => {
+  return items
+    .filter((item) => hasRole(item.roles, userRoles))
+    .map((item) => {
+      const newItem = { ...item }
+      if (item.items) {
+        newItem.items = filterMenuItems(item.items, userRoles)
+      }
+      return newItem
+    })
+}
 
 export const getMenuOptions = (userRoles: UserRoles[]) => {
   const menuItems = [
@@ -27,17 +37,6 @@ export const getMenuOptions = (userRoles: UserRoles[]) => {
       route: { name: 'home.customers' }
     }
   ]
-  const filterMenuItems = (items: MenuItem[], userRoles: UserRoles[]) => {
-    return items
-      .filter((item) => hasRole(item.roles, userRoles))
-      .map((item) => {
-        const newItem = { ...item }
-        if (item.items) {
-          newItem.items = filterMenuItems(item.items, userRoles)
-        }
-        return newItem
-      })
-  }
 
   return filterMenuItems(menuItems, userRoles)
 }

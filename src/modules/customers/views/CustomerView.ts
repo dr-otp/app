@@ -1,23 +1,29 @@
 import { PrimeIcons as icons } from '@primevue/core/api'
 import { useMutation, useQuery } from '@tanstack/vue-query'
+import { useToast } from 'primevue/usetoast'
 import { useForm } from 'vee-validate'
-import { defineComponent, watch } from 'vue'
+import { computed, defineComponent, watch, watchEffect } from 'vue'
+import { useRouter } from 'vue-router'
 
 import CustomButton from '@shared/components/CustomButton.vue'
 import CustomCard from '@shared/components/CustomCard.vue'
 import CustomInputText from '@shared/components/CustomInputText.vue'
+import MenuPopup from '@shared/components/MenuPopup.vue'
 import { Formatter } from '@shared/helpers'
 import { useConfigStore } from '@shared/stores/config.store'
-import { getCustomerAction, createUpdateCustomerAction } from '../actions'
+import {
+  createUpdateCustomerAction,
+  deleteRestoreCustomerAction,
+  getCustomerAction
+} from '../actions'
+import type { DeleteRestoreCustomer } from '../interfaces'
 import { customerSchema } from '../schemas/customer.schema'
-import { useToast } from 'primevue/usetoast'
-import { useRouter } from 'vue-router'
 
 export default defineComponent({
   props: {
-    customerId: { type: String, required: true }
+    customerCode: { type: String, required: true }
   },
-  components: { CustomCard, CustomInputText, CustomButton },
+  components: { CustomCard, CustomInputText, CustomButton, MenuPopup },
   setup: (props) => {
     useConfigStore().setTitle('Cliente | OTP')
 
@@ -35,22 +41,42 @@ export default defineComponent({
       isLoading,
       refetch
     } = useQuery({
-      queryKey: ['customer', props.customerId],
-      queryFn: () => getCustomerAction(props.customerId),
+      queryKey: ['customer', props.customerCode],
+      queryFn: () => getCustomerAction(props.customerCode),
       retry: false
     })
 
     const {
-      mutate,
-      isPending,
+      mutate: updateMutation,
+      isPending: isUpdatePending,
       isSuccess: isUpdateSuccess,
       data: updatedCustomer
     } = useMutation({
       mutationFn: createUpdateCustomerAction
     })
 
-    const onSubmit = handleSubmit(async (values) => {
-      mutate(values)
+    const {
+      mutate: deleteMutation,
+      isPending: isDeletePending,
+      isSuccess: isDeleteSuccess,
+      data: deletedCustomer
+    } = useMutation({
+      mutationFn: ({ customerId, isDeleted }: DeleteRestoreCustomer) =>
+        deleteRestoreCustomerAction(customerId, isDeleted)
+    })
+
+    const onSubmit = handleSubmit(async (values) => updateMutation(values))
+
+    const onDeleteRestore = (customerId: string | undefined, isDeleted: boolean) => {
+      if (!customerId) return
+      deleteMutation({ customerId, isDeleted })
+    }
+
+    watchEffect(() => {
+      if (isError.value && !isLoading.value) {
+        router.replace({ name: 'not.found' })
+        return
+      }
     })
 
     watch(
@@ -58,31 +84,52 @@ export default defineComponent({
       () => {
         if (!customer) return
 
-        useConfigStore().setTitle(`Cliente ${customer.value?.name} | OTP`)
+        const title = customer.value?.name
+          ? `Cliente ${customer.value.name} | OTP`
+          : 'Nuevo cliente | OTP'
+
+        useConfigStore().setTitle(title)
         resetForm({ values: customer.value })
       },
       { deep: true, immediate: true }
     )
 
-    watch(isUpdateSuccess, (value) => {
-      if (!value) return
+    watch([isUpdateSuccess, isDeleteSuccess], ([updateSuccess, deleteSuccess]) => {
+      if (updateSuccess) {
+        toast.add({
+          severity: 'success',
+          summary: 'Éxito',
+          detail: 'Cliente actualizado correctamente',
+          life: 1000
+        })
 
-      toast.add({
-        severity: 'success',
-        summary: 'Éxito',
-        detail: 'Inicio de sesión exitoso',
-        life: 1000
-      })
-      router.replace({
-        name: 'home.customer',
-        params: { customerId: updatedCustomer.value.id }
-      })
+        router.replace({
+          name: 'home.customer',
+          params: { customerCode: updatedCustomer.value!.code }
+        })
 
-      resetForm({ values: updatedCustomer.value })
+        resetForm({ values: updatedCustomer.value })
+      }
+
+      if (deleteSuccess) {
+        toast.add({
+          severity: 'warn',
+          summary: 'Éxito',
+          detail: 'Cliente eliminado correctamente',
+          life: 1000
+        })
+
+        router.replace({
+          name: 'home.customer',
+          params: { customerCode: deletedCustomer.value!.code }
+        })
+
+        resetForm({ values: deletedCustomer.value })
+      }
     })
 
     watch(
-      () => props.customerId,
+      () => props.customerCode,
       () => refetch()
     )
 
@@ -90,7 +137,6 @@ export default defineComponent({
       //* Props
       customer,
       icons,
-      isPending,
 
       //* Form fields
       name,
@@ -102,9 +148,12 @@ export default defineComponent({
       meta,
 
       //! Getters
+      isPending: computed(() => isUpdatePending.value || isDeletePending.value),
+
       //? Methods
       onSubmit,
-      Formatter
+      Formatter,
+      onDeleteRestore
     }
   }
 })

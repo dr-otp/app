@@ -19,7 +19,7 @@ const { customers, lastPage, total, isFetching, isLoading, isPlaceholderData } =
     :btn-disabled="isLoading && !isPlaceholderData"
     :loading="isLoading && !isPlaceholderData"
     :has-data="!!customers && customers.length > 0"
-    @on:click="$router.push({ name: 'home.customer', params: { customerId: 'nuevo' } })"
+    @on:click="$router.push({ name: 'home.customer', params: { customerCode: 'nuevo' } })"
   >
     <template #body>
       <CustomerCard
@@ -29,7 +29,7 @@ const { customers, lastPage, total, isFetching, isLoading, isPlaceholderData } =
         @on:edit="
           $router.push({
             name: 'home.customer',
-            params: { customerId: customer.id }
+            params: { customerCode: customer.code }
           })
         "
       />

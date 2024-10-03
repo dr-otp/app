@@ -1,8 +1,8 @@
 import { otpApi } from '@/api/otpApi'
 import type { Customer } from '../interfaces'
 
-export const getCustomerAction = async (customerId: string): Promise<Customer> => {
-  if (customerId === 'nuevo')
+export const getCustomerAction = async (customerCode: string): Promise<Customer> => {
+  if (customerCode === 'nuevo')
     return {
       id: '',
       code: 0,
@@ -17,7 +17,7 @@ export const getCustomerAction = async (customerId: string): Promise<Customer> =
     }
 
   try {
-    const { data } = await otpApi.get<Customer>(`/customers/${customerId}`)
+    const { data } = await otpApi.get<Customer>(`/customers/code/${customerCode}`)
 
     return data
   } catch (error) {

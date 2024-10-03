@@ -2,10 +2,10 @@
 
 <template>
   <section class="flex justify-center" v-if="customer">
-    <CustomCard class="lg:w-3/4 xl:w-2/3 sm:w-full" :deleted="customer.deletedAt">
+    <CustomCard class="w-full max-w-[50rem]" :deleted="!!customer.deletedAt">
       <template #title>
         <section class="flex gap-2">
-          <h2 class="text-2xl font-semibold flex items-center flex-wrap gap-2">
+          <h2 class="text-2xl font-semibold flex items-center flex-wrap gap-2 flex-1">
             <Button
               v-tooltip.top="'Regresar'"
               @click="$router.push({ name: 'home.customers' })"
@@ -20,8 +20,13 @@
                 <span class="text-2xl"># {{ customer.code }}</span>
               </template>
             </Tag>
-            <Tag v-if="customer.deletedAt" severity="danger"> Eliminado </Tag>
+            <Tag v-if="!!customer.deletedAt" severity="danger">Eliminado</Tag>
           </h2>
+          <MenuPopup
+            :is-deleted="!!customer?.deletedAt"
+            @on:new="$router.replace({ name: 'home.customer', params: { customerCode: 'nuevo' } })"
+            @on:delete="() => onDeleteRestore(customer?.id, !!customer?.deletedAt)"
+          />
         </section>
       </template>
       <template #content>
@@ -98,14 +103,13 @@
           </section>
 
           <!-- Submit Button -->
-          <div class="flex flex-row-reverse flex-wrap gap-2">
+          <div class="flex justify-end gap-2">
             <CustomButton
               type="submit"
               label="Guardar cambios"
               :disabled="(!meta.dirty && meta.valid) || isPending"
               :loading="isPending"
             />
-            <CustomButton v-if="customer.deletedAt" label="Restaurar" severity="info" />
           </div>
         </form>
       </template>

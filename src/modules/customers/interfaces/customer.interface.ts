@@ -12,3 +12,8 @@ export interface Customer {
   updatedBy: UserSummary | null
   deletedBy: UserSummary | null
 }
+
+export interface DeleteRestoreCustomer {
+  customerId: string
+  isDeleted: boolean
+}

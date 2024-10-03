@@ -7,7 +7,7 @@ export const CUSTOMER_ROUTES: RouteRecordRaw[] = [
     component: () => import('@/modules/customers/views/CustomersView.vue')
   },
   {
-    path: '/clientes/:customerId',
+    path: '/clientes/:customerCode',
     name: 'home.customer',
     props: true,
     component: () => import('@/modules/customers/views/CustomerView.vue')
