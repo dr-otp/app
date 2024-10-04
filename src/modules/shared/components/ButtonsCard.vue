@@ -3,7 +3,7 @@ import { PrimeIcons as icons } from '@primevue/core/api'
 import type { CardSlots } from 'primevue/card'
 import { ref } from 'vue'
 
-import type { UserSummary } from '@/modules/auth/interfaces'
+import type { UserSummary } from '@/modules/users/interfaces'
 import { useAuthStore } from '@/modules/auth/store/auth.store'
 import CustomButton from './CustomButton.vue'
 import InfoPopover from './InfoPopover.vue'
@@ -16,7 +16,7 @@ interface Props {
 
 withDefaults(defineProps<Props>(), { deleted: false })
 defineSlots<CardSlots>()
-defineEmits(['on:info', 'on:edit', 'on:delete'])
+defineEmits(['on:edit', 'on:delete'])
 
 const authStore = useAuthStore()
 const popRef = ref<any>(null)

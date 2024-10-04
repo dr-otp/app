@@ -2,9 +2,9 @@
 import { PrimeIcons as icons } from '@primevue/core/api'
 import { ref } from 'vue'
 
-import type { User } from '@/modules/auth/interfaces'
+import type { User } from '@/modules/users/interfaces'
+import ButtonsCard from '@/modules/shared/components/ButtonsCard.vue'
 import CustomButton from '@shared/components/CustomButton.vue'
-import BaseCard from '@shared/components/BaseCard.vue'
 import InfoPopover from '@shared/components/InfoPopover.vue'
 
 interface Props {
@@ -22,7 +22,13 @@ const handleViewUser = (evt: MouseEvent) => {
 </script>
 
 <template>
-  <BaseCard>
+  <ButtonsCard
+    :created-at="user.createdAt"
+    :created-by="user.creator"
+    :deleted="!!user.deletedAt"
+    @on:edit="$router.push({ name: 'user.detail', params: { id: user.username } })"
+    @on:delete="() => console.log('Delete User')"
+  >
     <template #title>@{{ user.username }}</template>
     <template #subtitle>{{ user.email }}</template>
     <template #content>
@@ -59,7 +65,7 @@ const handleViewUser = (evt: MouseEvent) => {
         />
       </section>
     </template>
-  </BaseCard>
+  </ButtonsCard>
 </template>
 
 <style scoped></style>

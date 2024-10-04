@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { CardSlots } from 'primevue/card'
 
-import type { UserSummary } from '@/modules/auth/interfaces'
+import type { UserSummary } from '@/modules/users/interfaces'
 
 interface Props {
   deleted?: boolean

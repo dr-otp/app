@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { UserRoles } from '@/modules/auth/interfaces'
+import { UserRole } from '@/modules/users/interfaces'
 import { PrimeIcons as icons } from '@primevue/core/api'
 import { computed, ref } from 'vue'
 import { hasRole } from '../helpers'
@@ -25,7 +25,7 @@ const items = computed(() => [
     items: [
       { label: 'Nuevo', icon: icons.PLUS_CIRCLE, command: () => emits('on:new') },
       {
-        visible: hasRole(authStore.userRoles, UserRoles.Admin),
+        visible: hasRole(authStore.userRoles, UserRole.Admin),
         label: props.isDeleted ? 'Restaurar' : 'Eliminar',
         icon: props.isDeleted ? icons.UNDO : icons.TRASH,
         command: () => emits('on:delete')

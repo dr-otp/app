@@ -3,14 +3,15 @@ import type { RouteRecordRaw } from 'vue-router'
 
 export const USERS_ROUTES: RouteRecordRaw[] = [
   {
-    path: 'usuarios',
-    name: 'home.users',
+    path: '/usuarios',
+    name: 'user.list',
     beforeEnter: [isAdminGuard],
     component: () => import('../views/UsersView.vue')
   },
   {
-    path: 'usuarios',
-    name: 'home.user',
+    path: '/usuarios/u/:id',
+    name: 'user.detail',
+    props: true,
     beforeEnter: [isAdminGuard],
     component: () => import('../views/UserView.vue')
   }

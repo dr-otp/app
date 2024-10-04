@@ -9,10 +9,6 @@ import { useUsers } from '../composables/useUsers'
 useConfigStore().setTitle('Usuarios | OTP')
 const { users, lastPage, total, isFetching, isLoading, isPlaceholderData } = useUsers()
 const { page } = usePagination()
-
-const handleNewUser = () => {
-  console.log('New User')
-}
 </script>
 
 <template>
@@ -20,7 +16,12 @@ const handleNewUser = () => {
     :blockBody="isFetching && isPlaceholderData"
     title="Usuarios"
     label="Nuevo Usuario"
-    @on:click="handleNewUser"
+    @on:click="
+      $router.push({
+        name: 'user.detail',
+        params: { id: 'nuevo' }
+      })
+    "
     :btn-disabled="isLoading && !isPlaceholderData"
     :loading="isLoading && !isPlaceholderData"
     :has-data="!!users && users.length > 0"

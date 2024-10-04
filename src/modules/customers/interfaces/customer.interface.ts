@@ -1,4 +1,4 @@
-import type { UserSummary } from '@/modules/auth/interfaces'
+import type { UserSummary } from '@/modules/users/interfaces'
 
 export interface Customer {
   id: string

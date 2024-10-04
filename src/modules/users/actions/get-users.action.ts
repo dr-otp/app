@@ -1,5 +1,5 @@
 import { otpApi } from '@/api/otpApi'
-import type { User } from '@/modules/auth/interfaces'
+import type { User } from '@/modules/users/interfaces'
 import { getLimitPaginationHelper } from '@shared/helpers'
 import type { ApiListResponse } from '@shared/interfaces'
 

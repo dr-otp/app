@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { UserSummary } from '@/modules/auth/interfaces'
+import type { UserSummary } from '@/modules/users/interfaces'
 import { Formatter } from '@shared/helpers/formatter.helper'
 import { PrimeIcons as icons } from '@primevue/core/api'
 import type { PopoverMethods } from 'primevue/popover'
