@@ -2,6 +2,7 @@ import { otpApi } from '@/api/otpApi'
 import type { User } from '@/modules/users/interfaces'
 
 export const createUpdateUserAction = async (user: Partial<User>): Promise<User> => {
+  console.log('🚀 ~ createUpdateUserAction ~ user:', user)
   const userId = user.id
 
   user = cleanUser(user)

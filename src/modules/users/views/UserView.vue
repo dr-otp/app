@@ -45,14 +45,6 @@
             autofocus
           />
 
-          <CustomInputText
-            id="password"
-            label="Contraseña"
-            v-model="password"
-            v-bind="passwordAttrs"
-            :error="errors.password"
-            autofocus
-          />
           <!-- Roles -->
           <Fieldset legend="Roles">
             <section class="flex justify-start items-center flex-wrap gap-2 mb-2">
@@ -101,5 +93,11 @@
         </form>
       </template>
     </BaseCard>
+    <UserCredentialDialog
+      :visible="isVisible"
+      :username="user.username"
+      :password="password"
+      @update:visible="onUpdateVisible"
+    />
   </section>
 </template>

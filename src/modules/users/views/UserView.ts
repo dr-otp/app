@@ -1,28 +1,31 @@
 import { PrimeIcons as icons } from '@primevue/core/api'
 import { useQuery } from '@tanstack/vue-query'
 import { useFieldArray, useForm } from 'vee-validate'
-import { computed, defineComponent, watch, watchEffect } from 'vue'
+import { computed, defineComponent, ref, watch, watchEffect } from 'vue'
 import { useRouter } from 'vue-router'
 
+import { UserRole } from '@/modules/users/interfaces'
 import BaseCard from '@shared/components/BaseCard.vue'
 import CustomButton from '@shared/components/CustomButton.vue'
 import CustomInputText from '@shared/components/CustomInputText.vue'
 import MenuPopup from '@shared/components/MenuPopup.vue'
 import { Formatter } from '@shared/helpers/formatter.helper'
 import { useConfigStore } from '@shared/stores/config.store'
-import { getUserByUsernameAction } from '../actions'
-import { userSchema } from '../schemas/user.schema'
-import { UserRole } from '@/modules/users/interfaces'
-import { useUser } from '../composables'
 import { useToast } from 'primevue/usetoast'
+import { getUserByUsernameAction } from '../actions'
+import UserCredentialDialog from '../components/UserCredentialDialog.vue'
+import { useUser } from '../composables'
+import { userSchema } from '../schemas/user.schema'
 
 export default defineComponent({
   props: { id: { type: String, required: true } },
-  components: { BaseCard, CustomInputText, CustomButton, MenuPopup },
+  components: { BaseCard, CustomInputText, CustomButton, MenuPopup, UserCredentialDialog },
   setup: (props) => {
     useConfigStore().setTitle('Usuario | OTP')
     const router = useRouter()
     const toast = useToast()
+    const isVisible = ref(false)
+    const password = ref('')
     const {
       updateMutation,
       isUpdatePending,
@@ -41,7 +44,6 @@ export default defineComponent({
 
     const [username, usernameAttrs] = defineField('username')
     const [email, emailAttrs] = defineField('email')
-    const [password, passwordAttrs] = defineField('password')
     const { fields: roles, remove: removeRole, push: pushRoles } = useFieldArray<UserRole>('roles')
 
     const {
@@ -63,10 +65,12 @@ export default defineComponent({
     }
 
     const onSubmit = handleSubmit(async (values) => updateMutation(values))
+
     const onDeleteRestore = (userId: string | undefined, isDeleted: boolean) => {
       if (!userId) return
       deleteMutation({ userId, isDeleted })
     }
+
     const onNewUser = (): void => {
       if (!user) {
         router.replace({ name: 'user.detail', params: { id: 'nuevo' } })
@@ -74,6 +78,11 @@ export default defineComponent({
       }
 
       router.push({ name: 'user.detail', params: { id: 'nuevo' } })
+    }
+
+    const onUpdateVisible = (state: boolean) => {
+      isVisible.value = state
+      password.value = ''
     }
 
     watchEffect(() => {
@@ -106,6 +115,11 @@ export default defineComponent({
           name: 'user.detail',
           params: { id: updatedUser.value!.username }
         })
+
+        if (updatedUser.value?.password) {
+          isVisible.value = true
+          password.value = updatedUser.value.password
+        }
 
         resetForm({ values: updatedUser.value })
       }
@@ -142,14 +156,14 @@ export default defineComponent({
       errors,
       isPending: computed(() => isUpdatePending.value || isDeletePending.value),
       UserRole,
+      isVisible,
+      password,
 
       //* Form
       username,
       usernameAttrs,
       email,
       emailAttrs,
-      password,
-      passwordAttrs,
       roles,
 
       //! Getters
@@ -159,7 +173,8 @@ export default defineComponent({
       Formatter,
       hasRole: (role: UserRole) => roles.value.map((r) => r.value).includes(role),
       onDeleteRestore,
-      onNewUser
+      onNewUser,
+      onUpdateVisible
     }
   }
 })
