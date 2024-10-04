@@ -1,71 +1,50 @@
 <script setup lang="ts">
-import { PrimeIcons as icons } from '@primevue/core/api'
-import { ref } from 'vue'
-
-import type { User } from '@/modules/users/interfaces'
 import ButtonsCard from '@/modules/shared/components/ButtonsCard.vue'
-import CustomButton from '@shared/components/CustomButton.vue'
-import InfoPopover from '@shared/components/InfoPopover.vue'
+import type { User } from '@/modules/users/interfaces'
+import { useUser } from '../composables'
+import { watch } from 'vue'
+import { useToast } from 'primevue/usetoast'
 
 interface Props {
   user: User
 }
 
 defineProps<Props>()
-const popRef = ref<any>(null)
+const toast = useToast()
+const { deleteMutation, isDeletePending, isDeleteSuccess, deletedUser } = useUser()
 
-const handleViewUser = (evt: MouseEvent) => {
-  if (!popRef.value) return
+watch(isDeleteSuccess, (value) => {
+  if (!value) return
 
-  popRef.value.open(evt)
-}
+  const isDeleted = deletedUser.value?.deletedAt
+
+  toast.add({
+    severity: isDeleted ? 'error' : 'info',
+    summary: 'Éxito',
+    detail: `Usuario ${isDeleted ? 'eliminado' : 'restaurado'} correctamente`,
+    life: 1000
+  })
+})
 </script>
 
 <template>
-  <ButtonsCard
-    :created-at="user.createdAt"
-    :created-by="user.creator"
-    :deleted="!!user.deletedAt"
-    @on:edit="$router.push({ name: 'user.detail', params: { id: user.username } })"
-    @on:delete="() => console.log('Delete User')"
-  >
-    <template #title>@{{ user.username }}</template>
-    <template #subtitle>{{ user.email }}</template>
-    <template #content>
-      <div class="flex gap-2">
-        <Tag v-for="(role, index) in user?.roles" :key="index" rounded :value="role" />
-      </div>
-      <InfoPopover
-        title="Creado por:"
-        ref="popRef"
-        :user="user.creator"
-        :created-at="user.createdAt"
-      />
-    </template>
-    <template #footer>
-      <section class="flex justify-end gap-2">
-        <CustomButton
-          v-tooltip.top="'Info'"
-          @click="handleViewUser"
-          :icon="icons.INFO"
-          icon-class="text-3xl"
-          severity="contrast"
-        />
-        <CustomButton
-          v-tooltip.top="'Editar'"
-          @click="() => console.log('Edit User')"
-          :icon="icons.PENCIL"
-          severity="info"
-        />
-        <CustomButton
-          v-tooltip.top="'Eliminar'"
-          @click="() => console.log('Delete User')"
-          :icon="icons.TRASH"
-          severity="danger"
-        />
-      </section>
-    </template>
-  </ButtonsCard>
+  <BlockUI :blocked="isDeletePending">
+    <ButtonsCard
+      :created-at="user.createdAt"
+      :created-by="user.creator"
+      :deleted="!!user.deletedAt"
+      @on:edit="$router.push({ name: 'user.detail', params: { id: user.username } })"
+      @on:delete="deleteMutation({ userId: user.id, isDeleted: !!user.deletedAt })"
+    >
+      <template #title>@{{ user.username }}</template>
+      <template #subtitle>{{ user.email }}</template>
+      <template #content>
+        <div class="flex gap-2">
+          <Tag v-for="(role, index) in user?.roles" :key="index" rounded :value="role" />
+        </div>
+      </template>
+    </ButtonsCard>
+  </BlockUI>
 </template>
 
 <style scoped></style>
