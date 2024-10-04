@@ -2,6 +2,7 @@ import { UserRole } from '@/modules/users/interfaces'
 import { hasRole } from '@shared/helpers'
 import { PrimeIcons as icons } from '@primevue/core/api'
 import type { MenuItem } from 'primevue/menuitem'
+import { envs } from '@/config/envs'
 
 const filterMenuItems = (items: MenuItem[], userRoles: UserRole[]) => {
   return items
@@ -22,7 +23,8 @@ export const getMenuOptions = (userRoles: UserRole[]) => {
       roles: [UserRole.Admin, UserRole.Moderator],
       icon: icons.TICKET,
       label: 'Vales',
-      route: { name: 'home.voucher' }
+      route: { name: 'home.voucher' },
+      visible: envs.mode === 'development'
     },
     {
       roles: [UserRole.Admin],
