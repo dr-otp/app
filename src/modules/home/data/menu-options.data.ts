@@ -37,6 +37,12 @@ export const getMenuOptions = (userRoles: UserRole[]) => {
       label: 'Clientes',
       icon: icons.USERS,
       route: { name: 'home.customers' }
+    },
+    {
+      roles: [UserRole.Admin, UserRole.Moderator],
+      label: 'Productos',
+      icon: icons.BOX,
+      route: { name: 'product.list' }
     }
   ]
 

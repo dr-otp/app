@@ -14,6 +14,7 @@ declare module 'vue' {
     Chip: typeof import('primevue/chip')['default']
     Dialog: typeof import('primevue/dialog')['default']
     Fieldset: typeof import('primevue/fieldset')['default']
+    InputNumber: typeof import('primevue/inputnumber')['default']
     InputOtp: typeof import('primevue/inputotp')['default']
     InputText: typeof import('primevue/inputtext')['default']
     Menu: typeof import('primevue/menu')['default']

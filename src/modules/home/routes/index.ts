@@ -1,5 +1,6 @@
 import isAuthenticatedGuard from '@/modules/auth/guards/is-authenticated.guard'
 import { CUSTOMER_ROUTES } from '@/modules/customers/routes'
+import { PRODUCT_ROUTES } from '@/modules/product/routes'
 import { USERS_ROUTES } from '@/modules/users/routes'
 import { VOUCHERS_ROUTES } from '@/modules/vouchers/routes'
 import type { RouteRecordRaw } from 'vue-router'
@@ -25,6 +26,7 @@ export const HOME_ROUTES: RouteRecordRaw = {
     ...VOUCHERS_ROUTES,
     ...USERS_ROUTES,
     ...CUSTOMER_ROUTES,
+    ...PRODUCT_ROUTES,
 
     {
       path: '/:pathMatch(.*)*',
