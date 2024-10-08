@@ -13,4 +13,16 @@ otpApi.interceptors.request.use((config) => {
   return config
 })
 
+otpApi.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      // Handle 401 error, e.g., redirect to login page or refresh token
+      console.log('Unauthorized access - 401')
+      // Add your custom logic here
+    }
+    return Promise.reject(error)
+  }
+)
+
 export { otpApi }
