@@ -24,7 +24,7 @@
           </h2>
           <MenuPopup
             :is-deleted="!!product?.deletedAt"
-            @on:new="$router.replace({ name: 'home.product', params: { productCode: 'nuevo' } })"
+            @on:new="$router.replace({ name: 'product.detail', params: { productCode: 'nuevo' } })"
             @on:delete="() => onDeleteRestore(product?.id, !!product?.deletedAt)"
           />
         </section>

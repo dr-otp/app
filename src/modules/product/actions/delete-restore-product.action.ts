@@ -5,7 +5,7 @@ export const deleteRestoreProductAction = async (
   productId: string,
   isDeleted: boolean
 ): Promise<Product> => {
-  return isDeleted ? deleteProduct(productId) : restoreProduct(productId)
+  return isDeleted ? restoreProduct(productId) : deleteProduct(productId)
 }
 
 const deleteProduct = async (productId: string) => {

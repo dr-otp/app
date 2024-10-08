@@ -19,7 +19,7 @@ export const getProductAction = async (productId: string): Promise<Product> => {
   try {
     const { data } = await otpApi.get<Product>(`/products/${productId}/code`)
 
-    return data
+    return { ...data, price: parseFloat(data.price.toString()) }
   } catch (error) {
     console.log('Error: ', error)
     throw new Error('Unexpected error')

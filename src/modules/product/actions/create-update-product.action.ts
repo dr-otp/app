@@ -6,7 +6,7 @@ export const createUpdateProductAction = async (product: Partial<Product>) => {
 
   product = cleanProduct(product)
 
-  if (productId && productId !== '') return updateProduct(product)
+  if (productId && productId !== '') return updateProduct(productId, product)
 
   return createProduct(product)
 }
@@ -37,9 +37,9 @@ const createProduct = async (product: Partial<Product>) => {
   }
 }
 
-const updateProduct = async (product: Partial<Product>) => {
+const updateProduct = async (productId: string, product: Partial<Product>) => {
   try {
-    const { data } = await otpApi.put<Product>(`/products/${product.id}`, product)
+    const { data } = await otpApi.patch<Product>(`/products/${productId}`, product)
 
     return data
   } catch (error) {

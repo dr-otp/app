@@ -14,7 +14,7 @@ export const getUsersAction = async (page: number = 1): Promise<ApiListResponse<
 
     return data
   } catch (error) {
-    console.log(error)
+    console.log(`Error: ${error}`)
     throw new Error('Unexpected error')
   }
 }

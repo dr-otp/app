@@ -7,6 +7,7 @@ import ButtonsCard from '@shared/components/ButtonsCard.vue'
 import InfoPopover from '@shared/components/InfoPopover.vue'
 import type { Product } from '../interfaces/product.interface'
 import { useProduct } from '../composables/useProduct'
+import { Formatter } from '@/modules/shared/helpers'
 
 interface Props {
   product: Product
@@ -46,13 +47,14 @@ watch(isDeleteSuccess, (value) => {
         </Tag>
       </template>
       <template #subtitle>
-        <section class="flex flex-col">
+        <section class="flex flex-col text-lg">
           <span>
-            <i :class="[icons.USER, 'mr-2']" />
+            <i :class="[icons.PENCIL, 'mr-2']" />
             {{ product.name }}
           </span>
           <span>
-            <i :class="[icons.ENVELOPE, 'mr-2']" />
+            <i :class="[icons.MONEY_BILL, 'mr-2']" />
+            {{ Formatter.getCurrency(product.price) }}
           </span>
         </section>
       </template>

@@ -54,7 +54,7 @@ export default defineComponent({
     })
 
     const onSubmit = handleSubmit(async (values) => updateMutation(values))
-    const onDeleteRestore = (productId: string, isDeleted: boolean) => {
+    const onDeleteRestore = (productId?: string, isDeleted?: boolean) => {
       if (!productId) return
       deleteMutation({ productId, isDeleted })
     }

@@ -13,7 +13,7 @@ export const getVouchersAction = async (page: number = 1) => {
 
     return data
   } catch (error) {
-    console.log(error)
+    console.log(`Error: ${error}`)
     throw new Error('Unexpected error')
   }
 }

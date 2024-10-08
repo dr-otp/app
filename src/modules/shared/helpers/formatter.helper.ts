@@ -22,4 +22,15 @@ export class Formatter {
     const [hour, minute] = timePart.split(':')
     return `${hour}:${minute}`
   }
+
+  public static getCurrency(value: number | string): string {
+    value = typeof value === 'string' ? parseFloat(value) : value
+
+    const formattedValue = new Intl.NumberFormat('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }).format(value)
+
+    return `Q. ${formattedValue}`
+  }
 }
